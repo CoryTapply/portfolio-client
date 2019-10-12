@@ -1,0 +1,30 @@
+.Toast {
+  position: absolute;
+  z-index: 80;
+  top: 50%;
+  left: 50%;
+  background-color: RGB(30,30,30);
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: spinner 0.5s ease-in-out forwards;
+  transform-origin: center;
+  &-Icon {
+    width: 50px;
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0;
+  }
+}

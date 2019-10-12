@@ -1,0 +1,95 @@
+.VideoThumbnail {
+  width: calc(100% / 5);
+  object-fit: cover;
+  box-sizing: border-box;
+  padding: 5px;
+  @media (max-width: 1200px) {
+    width: calc(100% / 4);
+  }
+  @media (max-width: 992px) {
+    width: calc(100% / 3);
+  }
+  @media (max-width: 576px) {
+    width: calc(100% / 2);
+  }
+  & * {
+    transition: background-color 0.25s ease-in;
+    font-family: "Exo 2", sans-serif;
+    color: white;
+    cursor: pointer;
+  }
+  &-Title {
+    &-Block {
+      height: 20px;
+      padding: 4px 0 4px 4px;
+      background: RGB(62, 66, 74);
+    }
+    &-Copy {
+      font-size: 14px;
+      font-weight: 400;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+  &-Image {
+    width: 100%;
+    height: auto;
+    object-fit: inherit;
+    &-Container {
+      position: relative;
+    }
+  }
+  &-Length {
+    background: RGBA(30, 30, 30, 0.65);
+    position: absolute;
+    font-weight: 600;
+    font-size: 13px;
+    min-width: 30px;
+    line-height: 20px;
+    text-align: center;
+    padding: 0 4px;
+    left: 4px;
+    bottom: 8px;
+    border-radius: 2px;
+    :hover > & {
+      background: RGBA(30, 30, 30, 0.95);
+    }
+  }
+  &-ViewCount {
+    background: RGBA(30, 30, 30, 0.45);
+    position: absolute;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;
+    padding: 0 4px;
+    right: 4px;
+    top: 4px;
+    border-radius: 2px;
+    &-Icon {
+      height: 18px;
+      transform: translateY(5px);
+      padding-left: 4px;
+    }
+    &-hack {
+      margin-top: -4px;
+    }
+    :hover > & {
+      background: RGBA(30, 30, 30, 0.95);
+    }
+  }
+  &-Progress {
+    position: absolute;
+    background: RGBA(235, 25, 25, 0.75);
+    height: 4px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    transform-origin: 0 0;
+    border-radius: 0 2px 2px 0;
+    :hover > & {
+      background: RGBA(235, 25, 25, 0.95);
+    }
+  }
+}

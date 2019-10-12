@@ -1,0 +1,75 @@
+body {
+  // font-family: 'Sofia', cursive;
+
+  // font-family: 'Cuprum', sans-serif;
+  // font-family: 'Montserrat Alternates', sans-serif;
+  // font-family: 'Ropa Sans', sans-serif;
+  // font-family: 'PT Sans Caption', sans-serif;
+  font-family: 'Tenali Ramakrishna', sans-serif;
+  // font-family: 'Ubuntu Mono', monospace;
+  
+  color: white;
+}
+.NavigationBar {
+  &-Container {
+    position: relative;
+    top: 0;
+    z-index: 100;
+    background: RGB(52, 55, 65);
+    height: 50px;
+    width: calc(100% - 20%);
+    padding: 0 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  &-Home {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    &-Title {
+      display: inline-block;
+      font-size: 20px;
+      font-weight: 200;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &-ButtonGroup {
+    height: inherit;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+  }
+  &-Button {
+    // background: inherit; 
+    // background-attachment: fixed;
+    // &:after {
+    //   content: '';
+    //   width: 200px;
+    //   height: 200px;
+    //   background: inherit; 
+    //   position: absolute;
+    //   left: -25px;
+    //   top: -25px;
+    //   box-shadow: inset 0 0 0 200px rgba(255,255,255,0.05);
+    //   filter: blur(5px);
+    // }
+    // position: relative;
+    margin: auto 5px;
+    height: 50%;
+    width: 110px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+    &:hover {
+      background: #5497C7;
+      cursor: pointer;
+    }
+  }
+}
