@@ -132,7 +132,15 @@ class LandingPage extends React.Component {
   handleFullscreen = () => {
     const { current: container } = this.fullscreenContainerRef;
     if (document.fullscreenElement) {
-      document.exitFullscreen();
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
+      }
     }
     if (container.requestFullscreen) {
       container.requestFullscreen();

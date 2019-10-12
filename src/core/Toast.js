@@ -3,7 +3,7 @@ import Style from "./Toast.scss";
 
 const TOAST_DURATION = 50000; // (ms)
 
-const Toast = ({ icon }) => {
+export const Toast = ({ icon }) => {
   return (
     <div className="Toast">
       <img
@@ -16,11 +16,9 @@ const Toast = ({ icon }) => {
 
 export default Toast;
 
-export const withCircularToast = Component => {
+export const withToast = Component => {
   return class extends Component {
-    componentDidMount() {
-      console.log('mounted the hoc')
-    }
+    componentDidMount() {}
     state = {
       toastIcon: "",
       toastKey: Date.now()
@@ -38,13 +36,13 @@ export const withCircularToast = Component => {
     };
 
     render() {
-      console.log('redering the hoc', this.state)
-      const renderToast = this.state.toastIcon;
       return (
-        <Fragment>
-          <Component onShowToast={this.handleShowToast} />
-          {renderToast && <Toast key={this.state.toastKey} center cirlce icon={this.state.toastIcon} />}
-        </Fragment>
+        <Component
+          onShowToast={this.handleShowToast}
+          toastKey={this.state.toastKey}
+          toastIcon={this.state.toastIcon}
+          {...this.props}
+        />
       );
     }
   };

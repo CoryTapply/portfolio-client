@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
-import ProgressBar from "./ProgressBar";
+import ControlBar from "./ControlBar";
 import Button from "../../core/Button";
 import Loading from "../../core/Loading";
-import { withCircularToast } from "../../core/Toast";
+import { withToast, Toast } from "../../core/Toast";
 import Style from "./VideoPlayer.scss";
 
 const CURRENT_FRAMERATE = 30;
@@ -21,55 +21,6 @@ class VideoPlayer extends React.Component {
   };
 
   videoRef = React.createRef();
-
-  componentDidMount() {
-    console.log("mounted");
-    document.addEventListener("fullscreenchange", this.listenFullscreen);
-    document.addEventListener("keydown", this.listenKeyPress);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("fullscreenchange", this.listenFullscreen);
-    document.removeEventListener("keydown", this.listenKeyPress);
-  }
-
-  listenFullscreen = () => {
-    this.setState({ isFullscreen: !!document.fullscreenElement });
-  };
-
-  listenKeyPress = event => {
-    console.log(event.keyCode);
-    switch (event.keyCode) {
-      case 32: // Space
-      case 75: // K
-        this.handlePlay();
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      case 37: // Left Arrow
-        this.handleRewind();
-        event.preventDefault();
-        break;
-      case 39: // Right Arrow
-        this.handleFastForward();
-        event.preventDefault();
-        break;
-      case 77: // M
-        this.handleMute();
-        event.preventDefault();
-        break;
-      case 188: // ,
-        this.handleFrameBack();
-        event.preventDefault();
-        break;
-      case 190: // .
-        this.handleFrameForward();
-        event.preventDefault();
-        break;
-      default:
-        break;
-    }
-  };
 
   getCurrentBufferIndex = () => {
     const { current: videoElement } = this.videoRef;
@@ -108,21 +59,6 @@ class VideoPlayer extends React.Component {
     });
   };
 
-  handleFullscreen = () => {
-    if (this.props.onFullscreen) {
-      this.props.onFullscreen();
-    } else {
-      const { current: videoElement } = this.videoRef;
-      if (videoElement.requestFullscreen) {
-        videoElement.requestFullscreen();
-      } else if (videoElement.mozRequestFullScreen) {
-        videoElement.mozRequestFullScreen(); // Firefox
-      } else if (videoElement.webkitRequestFullscreen) {
-        videoElement.webkitRequestFullscreen(); // Chrome and Safari
-      }
-    }
-  };
-
   handleFastForward = () => {
     const { current: videoElement } = this.videoRef;
     videoElement.currentTime = videoElement.currentTime + 5;
@@ -132,7 +68,7 @@ class VideoPlayer extends React.Component {
   handleRewind = () => {
     const { current: videoElement } = this.videoRef;
     videoElement.currentTime = videoElement.currentTime - 5;
-    this.props.onShowToast("backwardFive");
+    this.props.onShowToast("rewindFive");
   };
 
   handleFrameForward = () => {
@@ -224,6 +160,14 @@ class VideoPlayer extends React.Component {
             </div>
           )}
           {isLoading && <Loading />}
+          {this.props.toastIcon && (
+            <Toast
+              key={this.props.toastKey}
+              center
+              cirlce
+              icon={this.props.toastIcon}
+            />
+          )}
           <video
             className="VideoPlayer-Video"
             autoPlay={false}
@@ -243,80 +187,36 @@ class VideoPlayer extends React.Component {
             />
           </video>
         </div>
-        <div className="VideoPlayer-ControlBar">
-          <ProgressBar
-            videoRef={this.videoRef}
-            duration={duration}
-            currentTime={currentTime}
-            bufferedEnd={bufferedEnd}
-            updateTimeManual={this.handleUpdateTimeManual}
-          />
-          <div className="VideoPlayer-ControlBar-Controls">
-            <img
-              className="VideoPlayer-ControlBar-Controls-Play"
-              src={
-                isPlaying
-                  ? "http://localhost:9090/resources/icons/pause.svg"
-                  : "http://localhost:9090/resources/icons/play.svg"
-              }
-              onClick={this.handlePlay}
-            />
-            <img
-              className="VideoPlayer-ControlBar-Controls-Rewind"
-              src="http://localhost:9090/resources/icons/rewindFive.svg"
-              onClick={this.handleRewind}
-            />
-            <img
-              className="VideoPlayer-ControlBar-Controls-Forward"
-              src="http://localhost:9090/resources/icons/forwardFive.svg"
-              onClick={this.handleFastForward}
-            />
-            <img
-              className="VideoPlayer-ControlBar-Controls-Volume"
-              src={
-                isMuted
-                  ? "http://localhost:9090/resources/icons/muted.svg"
-                  : "http://localhost:9090/resources/icons/volume.svg"
-              }
-              onClick={this.handleMute}
-            />
-            <span className="VideoPlayer-ControlBar-Controls-Title">
-              RAIDER.IO SCORE IS USELESS - Fragnance Stream Highlights
-            </span>
-            <img
-              className="VideoPlayer-ControlBar-Controls-Settings"
-              src="http://localhost:9090/resources/icons/settings.svg"
-            />
-            <img
-              className="VideoPlayer-ControlBar-Controls-AspectRatio"
-              src="http://localhost:9090/resources/icons/aspectRatio.svg"
-            />
-            <img
-              className="VideoPlayer-ControlBar-Controls-Fullscreen"
-              src={
-                isFullscreen
-                  ? "http://localhost:9090/resources/icons/exitFullscreen.svg"
-                  : "http://localhost:9090/resources/icons/fullscreen.svg"
-              }
-              onClick={this.handleFullscreen}
-            />
-            <img
-              className="VideoPlayer-ControlBar-Controls-ScrollVideo"
-              src="http://localhost:9090/resources/icons/downArrow.svg"
-            />
-          </div>
-        </div>
+        <ControlBar
+          videoRef={this.videoRef}
+          duration={this.state.duration}
+          currentTime={this.state.currentTime}
+          bufferedEnd={this.state.bufferedEnd}
+          isPlaying={this.state.isPlaying}
+          isMuted={this.state.isMuted}
+          isFullscreen={this.state.isFullscreen}
+          onFullscreen={this.props.onFullscreen}
+          onUpdateTimeManual={this.handleUpdateTimeManual}
+          onPlay={this.handlePlay}
+          onRewind={this.handleRewind}
+          onFastForward={this.handleFastForward}
+          onMute={this.handleMute}
+          onFrameForward={this.handleFrameForward}
+          onFrameBack={this.handleFrameBack}
+        />
       </Fragment>
     );
   }
 }
 
 VideoPlayer.propTypes = {
-  onFullscreen: PropTypes.func
+  onFullscreen: PropTypes.func,
+  toastKey: PropTypes.number,
+  toastIcon: PropTypes.string
 };
 
 VideoPlayer.defaultPlayer = {
   onFullscreen() {}
 };
 
-export default withCircularToast(VideoPlayer);
+export default withToast(VideoPlayer);
