@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import Style from "./Toast.scss";
 
 const TOAST_DURATION = 50000; // (ms)
@@ -24,15 +24,11 @@ export const withToast = Component => {
       toastKey: Date.now()
     };
 
-    activeTimer = null;
-
     handleShowToast = toastIcon => {
       this.setState({
         toastIcon,
         toastKey: Date.now()
       });
-
-      clearTimeout(this.activeTimer);
     };
 
     render() {
