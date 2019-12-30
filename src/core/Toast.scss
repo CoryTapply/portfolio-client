@@ -13,6 +13,7 @@
   align-items: center;
   animation: spinner 0.5s ease-in-out forwards;
   transform-origin: center;
+  pointer-events: none;
   &-Icon {
     width: 50px;
   }
