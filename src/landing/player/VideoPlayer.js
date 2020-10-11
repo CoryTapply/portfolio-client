@@ -182,7 +182,7 @@ class VideoPlayer extends React.Component {
             onClick={this.handlePlay}
           >
             <source
-              src="http://localhost:9090/resources/smalltest1.mp4"
+              src={this.props.srcUrl}
               type="video/mp4"
             />
           </video>
@@ -212,10 +212,11 @@ class VideoPlayer extends React.Component {
 VideoPlayer.propTypes = {
   onFullscreen: PropTypes.func,
   toastKey: PropTypes.number,
-  toastIcon: PropTypes.string
+  toastIcon: PropTypes.string,
+  srcUrl: PropTypes.string
 };
 
-VideoPlayer.defaultPlayer = {
+VideoPlayer.defaultProps = {
   onFullscreen() {}
 };
 

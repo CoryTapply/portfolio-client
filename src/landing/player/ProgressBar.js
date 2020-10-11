@@ -29,8 +29,8 @@ class ProgressBar extends React.Component {
     const { current: videoElement } = this.props.videoRef;
     const { nativeEvent } = event;
     const time =
-      videoElement.duration * (nativeEvent.pageX / window.innerWidth);
-    this.setState({ hoverX: nativeEvent.pageX, hoverTime: time });
+      videoElement.duration * ((nativeEvent.pageX - this.getVideoPlayerLeftBound()) / this.getVideoPlayerWidth());
+    this.setState({ hoverX: (nativeEvent.pageX - this.getVideoPlayerLeftBound()), hoverTime: time });
   };
 
   handleMouseEnter = () => {
@@ -45,7 +45,7 @@ class ProgressBar extends React.Component {
     const { nativeEvent } = event;
     // Calculate the new time
     const time =
-      videoElement.duration * (nativeEvent.pageX / window.innerWidth);
+      videoElement.duration * ((nativeEvent.pageX - this.getVideoPlayerLeftBound()) / this.getVideoPlayerWidth());
 
     // Update the video time
     videoElement.currentTime = time;
@@ -64,15 +64,23 @@ class ProgressBar extends React.Component {
     if (this.state.isScrubbing) {
       const { current: videoElement } = this.props.videoRef;
 
-      const playbackPercent = event.pageX / window.innerWidth;
+      const playbackPercent = (event.pageX - this.getVideoPlayerLeftBound()) / this.getVideoPlayerWidth();
       // Calculate the new time
       const time = videoElement.duration * playbackPercent;
       // Update the video time
       this.props.updateTimeManual(playbackPercent * 100);
-      this.setState({ hoverX: event.pageX, hoverTime: time });
+      this.setState({ hoverX: (event.pageX - this.getVideoPlayerLeftBound()), hoverTime: time });
       videoElement.currentTime = time;
     }
   };
+
+  getVideoPlayerLeftBound = () => {
+    return this.props.videoRef.current.getBoundingClientRect().left;
+  }
+
+  getVideoPlayerWidth = () => {
+    return this.props.videoRef.current.getBoundingClientRect().width;
+  }
 
   render() {
     const { currentTime, bufferedEnd } = this.props;

@@ -1,30 +1,40 @@
-import React, {Fragment} from "react";
-import Style from "./NavigationBar.scss"
+import React, { Fragment } from "react";
+import Style from "./NavigationBar.scss";
 
-const links = [
-  {
-    name: 'Home',
-    url: ''
-  },
-  {
-    name: 'Linked-In',
-    url: ''
-  },
-  {
-    name: 'YouTube',
-    url: ''
-  },
-  {
-    name: 'Discord',
-    url: ''
-  },
-  {
-    name: 'Twitter',
-    url: ''
-  }
-];
+const NavigationBar = props => {
+  const links = [
+    {
+      name: "Home",
+      url: "",
+      action() {}
+    },
+    {
+      name: "Linked-In",
+      url: "",
+      action() {}
+    },
+    {
+      name: "YouTube",
+      url: "",
+      action() {}
+    },
+    {
+      name: "Discord",
+      url: "",
+      action() {}
+    },
+    {
+      name: "Twitter",
+      url: "",
+      action() {}
+    },
+    {
+      name: "Upload",
+      url: "",
+      action: props.onOpenUploadModal
+    }
+  ];
 
-const NavigationBar = () => {
   return (
     <div className="NavigationBar-Container">
       <div className="NavigationBar-Home">
@@ -32,7 +42,11 @@ const NavigationBar = () => {
       </div>
       <div className="NavigationBar-ButtonGroup">
         {links.map(link => (
-          <div className="NavigationBar-Button" key={link.name}>
+          <div
+            className="NavigationBar-Button"
+            key={link.name}
+            onClick={link.action}
+          >
             {link.name}
           </div>
         ))}

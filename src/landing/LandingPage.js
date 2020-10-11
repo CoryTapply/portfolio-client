@@ -67,60 +67,6 @@ class LandingPage extends React.Component {
     "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
     "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
     "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png"
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg",
-    // "https://i.imgur.com/FkLUdXF.jpg",
-    // "https://i.imgur.com/6LiPH4f.jpg",
-    // "https://wallpaperplay.com/walls/full/6/4/7/36499.jpg"
   ];
 
   handleClick = e => {
@@ -134,11 +80,14 @@ class LandingPage extends React.Component {
     if (document.fullscreenElement) {
       if (document.exitFullscreen) {
         document.exitFullscreen();
-      } else if (document.mozCancelFullScreen) { /* Firefox */
+      } else if (document.mozCancelFullScreen) {
+        /* Firefox */
         document.mozCancelFullScreen();
-      } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+      } else if (document.webkitExitFullscreen) {
+        /* Chrome, Safari and Opera */
         document.webkitExitFullscreen();
-      } else if (document.msExitFullscreen) { /* IE/Edge */
+      } else if (document.msExitFullscreen) {
+        /* IE/Edge */
         document.msExitFullscreen();
       }
     }
@@ -149,12 +98,13 @@ class LandingPage extends React.Component {
     } else if (container.webkitRequestFullscreen) {
       container.webkitRequestFullscreen(); // Chrome and Safari
     }
-  }
+  };
 
   render() {
+    console.log('rendering')
     return (
       <div ref={this.fullscreenContainerRef} className="LandingPage-Container">
-        <VideoPlayer onFullscreen={this.handleFullscreen} />
+        <VideoPlayer onFullscreen={this.handleFullscreen} srcUrl="http://localhost:9090/resources/smalltest1.mp4"/>
         <div className="LandingPage-VideoGrid">
           <Grid>
             {this.images.map((imageUrl, i) => (

@@ -8,10 +8,18 @@
     background: radial-gradient(circle at 70%, #121212 0%, #131B2E 65%, #131B2E 100%);
     &:fullscreen {
       overflow: scroll;
+      // Remove the Scroll Bar
+      &::-webkit-scrollbar {
+        width: 0px;  /* Remove scrollbar space */
+        height: 0px;  /* Remove scrollbar space */
+        background: transparent;  /* Optional: just make scrollbar invisible */
+      }
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
     }
   }
-  &-VideoGrid {
-    // Screen Height - (Video Control Bar Height) - (Footer Height)
-    min-height: calc(100vh - 40px - 80px);
-  }
+  // &-VideoGrid {
+  //   Screen Height - (Video Control Bar Height) - (Footer Height)
+  //   min-height: calc(100vh - 40px - 80px);
+  // }
 }
