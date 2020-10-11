@@ -104,7 +104,7 @@ class LandingPage extends React.Component {
     console.log('rendering')
     return (
       <div ref={this.fullscreenContainerRef} className="LandingPage-Container">
-        <VideoPlayer onFullscreen={this.handleFullscreen} srcUrl="http://localhost:9090/resources/smalltest1.mp4"/>
+        <VideoPlayer onFullscreen={this.handleFullscreen} srcUrl="http://localhost:9090/resources/uploaded/smalltest1.mp4"/>
         <div className="LandingPage-VideoGrid">
           <Grid>
             {this.images.map((imageUrl, i) => (
