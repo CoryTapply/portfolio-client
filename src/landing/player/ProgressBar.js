@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Style from './ProgressBar.scss';
+import './ProgressBar.scss';
 
 class ProgressBar extends React.Component {
   state = {

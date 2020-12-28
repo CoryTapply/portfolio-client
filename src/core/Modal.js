@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import Style from './Modal.scss';
+import './Modal.scss';
 
 const Modal = (props) => {
   const handleCloseModal = (e) => {

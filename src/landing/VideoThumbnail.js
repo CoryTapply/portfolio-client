@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '../core/Card';
-import Style from './VideoThumbnail.scss';
+import './VideoThumbnail.scss';
 
 const VideoThumbnail = ({ handleClick, imageUrl }) => {
   const lengthMin = Math.trunc(Math.random() * 100) % 25;

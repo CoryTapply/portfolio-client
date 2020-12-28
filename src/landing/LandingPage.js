@@ -2,7 +2,7 @@ import React from 'react';
 import VideoPlayer from './player/VideoPlayer';
 import VideoThumbnail from './VideoThumbnail';
 import Grid from '../core/Grid';
-import Style from './LandingPage.scss';
+import './LandingPage.scss';
 
 class LandingPage extends React.Component {
   state = {

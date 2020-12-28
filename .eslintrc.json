@@ -40,7 +40,10 @@
     "semi": [2, "always"],
     "import/no-extraneous-dependencies": ["off", { "devDependencies": false }],
     "react/jsx-fragments": ["warn", "element"],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/state-in-constructor": 0,
+    "react/destructuring-assignment": 0,
+    "arrow-body-style": [0, "as-needed"]
   },
   "env": {
     "browser": true,

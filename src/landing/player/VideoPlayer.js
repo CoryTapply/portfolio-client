@@ -4,7 +4,7 @@ import ControlBar from './ControlBar';
 import Button from '../../core/Button';
 import Loading from '../../core/Loading';
 import { withToast, Toast } from '../../core/Toast';
-import Style from './VideoPlayer.scss';
+import './VideoPlayer.scss';
 
 const CURRENT_FRAMERATE = 30;
 

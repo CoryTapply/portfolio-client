@@ -1,5 +1,5 @@
 import React from 'react';
-import Style from './Toast.scss';
+import './Toast.scss';
 
 const TOAST_DURATION = 50000; // (ms)
 
@@ -15,11 +15,12 @@ export default Toast;
 
 export const withToast = (Component) => {
   return class extends Component {
-    componentDidMount() {}
     state = {
       toastIcon: '',
       toastKey: Date.now(),
     };
+
+    componentDidMount() {}
 
     handleShowToast = (toastIcon) => {
       this.setState({

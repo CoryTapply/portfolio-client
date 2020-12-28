@@ -6,7 +6,7 @@ import LandingPage from './landing/LandingPage';
 import UploadModal from './fileUpload/UploadModal';
 // import { hot } from 'react-hot-loader/root';
 import Modal from './core/Modal';
-import style from './main.scss';
+import './main.scss';
 import Button from './core/Button';
 
 // Test import of styles

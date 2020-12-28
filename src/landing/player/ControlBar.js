@@ -4,7 +4,7 @@ import ProgressBar from './ProgressBar';
 import Button from '../../core/Button';
 import Loading from '../../core/Loading';
 import { withCircularToast } from '../../core/Toast';
-import Style from './ControlBar.scss';
+import './ControlBar.scss';
 
 const CURRENT_FRAMERATE = 30;
 

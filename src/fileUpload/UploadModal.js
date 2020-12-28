@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from '../core/Modal';
 import Button from '../core/Button';
 import VideoPlayer from '../landing/player/VideoPlayer';
-import Style from './UploadModal.scss';
+import './UploadModal.scss';
 
 class UploadModal extends React.Component {
   static propTypes = {
