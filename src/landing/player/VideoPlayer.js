@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
-import PropTypes from "prop-types";
-import ControlBar from "./ControlBar";
-import Button from "../../core/Button";
-import Loading from "../../core/Loading";
-import { withToast, Toast } from "../../core/Toast";
-import Style from "./VideoPlayer.scss";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import ControlBar from './ControlBar';
+import Button from '../../core/Button';
+import Loading from '../../core/Loading';
+import { withToast, Toast } from '../../core/Toast';
+import Style from './VideoPlayer.scss';
 
 const CURRENT_FRAMERATE = 30;
 
@@ -17,7 +17,7 @@ class VideoPlayer extends React.Component {
     isLoading: false,
     isMuted: false,
     isFullscreen: false,
-    hasError: false
+    hasError: false,
   };
 
   videoRef = React.createRef();
@@ -41,10 +41,10 @@ class VideoPlayer extends React.Component {
     console.log(this.videoRef);
     if (videoElement.paused) {
       videoElement.play();
-      this.props.onShowToast("play");
+      this.props.onShowToast('play');
     } else {
       videoElement.pause();
-      this.props.onShowToast("pause");
+      this.props.onShowToast('pause');
     }
     this.setState({ isPlaying: !videoElement.paused });
   };
@@ -54,7 +54,7 @@ class VideoPlayer extends React.Component {
     videoElement.muted = !videoElement.muted;
     this.setState({ isMuted: videoElement.muted }, () => {
       if (this.state.isMuted) {
-        this.props.onShowToast("muted");
+        this.props.onShowToast('muted');
       }
     });
   };
@@ -62,13 +62,13 @@ class VideoPlayer extends React.Component {
   handleFastForward = () => {
     const { current: videoElement } = this.videoRef;
     videoElement.currentTime = videoElement.currentTime + 5;
-    this.props.onShowToast("forwardFive");
+    this.props.onShowToast('forwardFive');
   };
 
   handleRewind = () => {
     const { current: videoElement } = this.videoRef;
     videoElement.currentTime = videoElement.currentTime - 5;
-    this.props.onShowToast("rewindFive");
+    this.props.onShowToast('rewindFive');
   };
 
   handleFrameForward = () => {
@@ -87,11 +87,11 @@ class VideoPlayer extends React.Component {
     const { current: videoElement } = this.videoRef;
     this.setState({
       currentTime: (100 / videoElement.duration) * videoElement.currentTime,
-      isLoading: false
+      isLoading: false,
     });
   };
 
-  handleUpdateTimeManual = currentTime => {
+  handleUpdateTimeManual = (currentTime) => {
     this.setState({ currentTime });
   };
 
@@ -99,25 +99,23 @@ class VideoPlayer extends React.Component {
     this.setState({
       currentTime: 0,
       bufferedEnd: 0,
-      hasError: false
+      hasError: false,
     });
   };
 
   handleDurationChange = () => {
     const { current: videoElement } = this.videoRef;
     this.setState({
-      duration: videoElement.duration
+      duration: videoElement.duration,
     });
   };
 
   handleProgress = () => {
     const { current: videoElement } = this.videoRef;
     if (videoElement.buffered.length > 0) {
-      const bufferedEnd = videoElement.buffered.end(
-        this.getCurrentBufferIndex()
-      );
+      const bufferedEnd = videoElement.buffered.end(this.getCurrentBufferIndex());
       this.setState({
-        bufferedEnd: (100 / videoElement.duration) * bufferedEnd
+        bufferedEnd: (100 / videoElement.duration) * bufferedEnd,
       });
     }
   };
@@ -136,38 +134,20 @@ class VideoPlayer extends React.Component {
   };
 
   render() {
-    const {
-      duration,
-      currentTime,
-      bufferedEnd,
-      isPlaying,
-      isLoading,
-      isMuted,
-      isFullscreen,
-      hasError
-    } = this.state;
+    const { duration, currentTime, bufferedEnd, isPlaying, isLoading, isMuted, isFullscreen, hasError } = this.state;
     return (
       <Fragment>
         <div className="VideoPlayer-Container">
           {hasError && (
             <div className="VideoPlayer-Error">
-              <span className="VideoPlayer-Error-Copy">
-                An error occured while loading video.
-              </span>
+              <span className="VideoPlayer-Error-Copy">An error occured while loading video.</span>
               <div>
                 <Button onClick={this.handleLoadAttempt}>Try Again</Button>
               </div>
             </div>
           )}
           {isLoading && <Loading />}
-          {this.props.toastIcon && (
-            <Toast
-              key={this.props.toastKey}
-              center
-              cirlce
-              icon={this.props.toastIcon}
-            />
-          )}
+          {this.props.toastIcon && <Toast key={this.props.toastKey} center cirlce icon={this.props.toastIcon} />}
           <video
             className="VideoPlayer-Video"
             autoPlay={false}
@@ -181,10 +161,7 @@ class VideoPlayer extends React.Component {
             onProgress={this.handleProgress}
             onClick={this.handlePlay}
           >
-            <source
-              src={this.props.srcUrl}
-              type="video/mp4"
-            />
+            <source src={this.props.srcUrl} type="video/mp4" />
           </video>
         </div>
         <ControlBar
@@ -213,11 +190,11 @@ VideoPlayer.propTypes = {
   onFullscreen: PropTypes.func,
   toastKey: PropTypes.number,
   toastIcon: PropTypes.string,
-  srcUrl: PropTypes.string
+  srcUrl: PropTypes.string,
 };
 
 VideoPlayer.defaultProps = {
-  onFullscreen() {}
+  onFullscreen() {},
 };
 
 export default withToast(VideoPlayer);

@@ -1,77 +1,77 @@
-import React from "react";
-import VideoPlayer from "./player/VideoPlayer";
-import VideoThumbnail from "./VideoThumbnail";
-import Grid from "../core/Grid";
-import Style from "./LandingPage.scss";
+import React from 'react';
+import VideoPlayer from './player/VideoPlayer';
+import VideoThumbnail from './VideoThumbnail';
+import Grid from '../core/Grid';
+import Style from './LandingPage.scss';
 
 class LandingPage extends React.Component {
   state = {
-    fullScreenImage: 1
+    fullScreenImage: 1,
   };
 
   fullscreenContainerRef = React.createRef();
 
   images = [
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png",
-    "http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png"
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
+    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
   ];
 
-  handleClick = e => {
+  handleClick = (e) => {
     this.setState({
-      fullScreenImage: Number(e.currentTarget.getAttribute("name"))
+      fullScreenImage: Number(e.currentTarget.getAttribute('name')),
     });
   };
 
@@ -101,18 +101,17 @@ class LandingPage extends React.Component {
   };
 
   render() {
-    console.log('rendering')
+    console.log('rendering');
     return (
       <div ref={this.fullscreenContainerRef} className="LandingPage-Container">
-        <VideoPlayer onFullscreen={this.handleFullscreen} srcUrl="http://localhost:9090/resources/uploaded/smalltest1.mp4"/>
+        <VideoPlayer
+          onFullscreen={this.handleFullscreen}
+          srcUrl="http://localhost:9090/resources/uploaded/smalltest1.mp4"
+        />
         <div className="LandingPage-VideoGrid">
           <Grid>
             {this.images.map((imageUrl, i) => (
-              <VideoThumbnail
-                key={i}
-                imageUrl={imageUrl}
-                onClick={this.handleClick}
-              />
+              <VideoThumbnail key={i} imageUrl={imageUrl} onClick={this.handleClick} />
             ))}
           </Grid>
         </div>

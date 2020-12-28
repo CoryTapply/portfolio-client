@@ -1,33 +1,30 @@
-import React from "react";
-import Style from "./Toast.scss";
+import React from 'react';
+import Style from './Toast.scss';
 
 const TOAST_DURATION = 50000; // (ms)
 
 export const Toast = ({ icon }) => {
   return (
     <div className="Toast">
-      <img
-        className="Toast-Icon"
-        src={`http://localhost:9090/resources/icons/${icon}.svg`}
-      />
+      <img className="Toast-Icon" src={`http://localhost:9090/resources/icons/${icon}.svg`} />
     </div>
   );
 };
 
 export default Toast;
 
-export const withToast = Component => {
+export const withToast = (Component) => {
   return class extends Component {
     componentDidMount() {}
     state = {
-      toastIcon: "",
-      toastKey: Date.now()
+      toastIcon: '',
+      toastKey: Date.now(),
     };
 
-    handleShowToast = toastIcon => {
+    handleShowToast = (toastIcon) => {
       this.setState({
         toastIcon,
-        toastKey: Date.now()
+        toastKey: Date.now(),
       });
     };
 

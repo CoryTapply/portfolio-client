@@ -27,7 +27,7 @@
     color: white;
     background: RGBA(30, 30, 30, 0.85);
     transform: translateX(-50%);
-    font-family: "Exo 2", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-weight: 600;
     font-size: 13px;
     line-height: 20px;
@@ -35,7 +35,7 @@
     padding: 0 8px;
     border-radius: 2px;
     &::after {
-      content: " ";
+      content: ' ';
       position: absolute;
       top: 100%;
       left: 50%;

@@ -5,17 +5,17 @@
     position: relative;
     // background: radial-gradient(ellipse at center, #113666 0%,#332b3a 100%);
     // background: radial-gradient(circle at 70%, #202D4C 0%, #131B2E 65%, #131B2E 100%);
-    background: radial-gradient(circle at 70%, #121212 0%, #131B2E 65%, #131B2E 100%);
+    background: radial-gradient(circle at 70%, #121212 0%, #131b2e 65%, #131b2e 100%);
     &:fullscreen {
       overflow: scroll;
       // Remove the Scroll Bar
       &::-webkit-scrollbar {
-        width: 0px;  /* Remove scrollbar space */
-        height: 0px;  /* Remove scrollbar space */
-        background: transparent;  /* Optional: just make scrollbar invisible */
+        width: 0px; /* Remove scrollbar space */
+        height: 0px; /* Remove scrollbar space */
+        background: transparent; /* Optional: just make scrollbar invisible */
       }
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
     }
   }
   // &-VideoGrid {

@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Style from "./Grid.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Style from './Grid.scss';
 
-const Grid = props => {
+const Grid = (props) => {
   return <div className="Grid">{props.children}</div>;
 };
 

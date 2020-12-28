@@ -1,0 +1,64 @@
+{
+  "ignorePatterns": ["dist", "node_modules"],
+  "rules": {
+    "strict": 0,
+    "max-len": [
+      "error",
+      {
+        "ignoreUrls": true,
+        "code": 120
+      }
+    ],
+    "prefer-template": "off",
+    "indent": ["error", 2],
+    "object-curly-spacing": ["error", "always"],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1,
+        "maxEOF": 1
+      }
+    ],
+    "no-var": "error",
+    "one-var": ["error", "never"],
+    "camelcase": "error",
+    "no-multi-assign": "error",
+    "quotes": ["error", "single"],
+    "no-array-constructor": "error",
+    "no-new-object": "error",
+    "no-new-wrappers": "error",
+    "no-nested-ternary": "error",
+    "no-console": [
+      "warn",
+      {
+        "allow": ["error"]
+      }
+    ],
+    "no-template-curly-in-string": "error",
+    "no-self-compare": "error",
+    "func-names": ["error", "as-needed"],
+    "semi": [2, "always"],
+    "import/no-extraneous-dependencies": ["off", { "devDependencies": false }],
+    "react/jsx-fragments": ["warn", "element"],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": ["airbnb", "airbnb/hooks", "prettier"],
+  "parser": "babel-eslint",
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["prettier"],
+  "settings": { "import/resolver": "webpack" }
+}

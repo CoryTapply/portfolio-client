@@ -1,30 +1,30 @@
-import React, { Fragment } from "react";
-import PropTypes from "prop-types";
-import ProgressBar from "./ProgressBar";
-import Button from "../../core/Button";
-import Loading from "../../core/Loading";
-import { withCircularToast } from "../../core/Toast";
-import Style from "./ControlBar.scss";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import ProgressBar from './ProgressBar';
+import Button from '../../core/Button';
+import Loading from '../../core/Loading';
+import { withCircularToast } from '../../core/Toast';
+import Style from './ControlBar.scss';
 
 const CURRENT_FRAMERATE = 30;
 
 class ControlBar extends React.Component {
   componentDidMount() {
-    console.log("mounted");
-    document.addEventListener("fullscreenchange", this.listenFullscreen);
-    document.addEventListener("keydown", this.listenKeyPress);
+    console.log('mounted');
+    document.addEventListener('fullscreenchange', this.listenFullscreen);
+    document.addEventListener('keydown', this.listenKeyPress);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("fullscreenchange", this.listenFullscreen);
-    document.removeEventListener("keydown", this.listenKeyPress);
+    document.removeEventListener('fullscreenchange', this.listenFullscreen);
+    document.removeEventListener('keydown', this.listenKeyPress);
   }
 
   listenFullscreen = () => {
     this.setState({ isFullscreen: !!document.fullscreenElement });
   };
 
-  listenKeyPress = event => {
+  listenKeyPress = (event) => {
     console.log(event.keyCode);
     switch (event.keyCode) {
       case 32: // Space
@@ -75,7 +75,7 @@ class ControlBar extends React.Component {
       onRewind,
       onFastForward,
       onMute,
-      onFullscreen
+      onFullscreen,
     } = this.props;
     return (
       <Fragment>
@@ -92,8 +92,8 @@ class ControlBar extends React.Component {
               className="ControlBar-Controls-Play"
               src={
                 isPlaying
-                  ? "http://localhost:9090/resources/icons/pause.svg"
-                  : "http://localhost:9090/resources/icons/play.svg"
+                  ? 'http://localhost:9090/resources/icons/pause.svg'
+                  : 'http://localhost:9090/resources/icons/play.svg'
               }
               onClick={onPlay}
             />
@@ -111,18 +111,13 @@ class ControlBar extends React.Component {
               className="ControlBar-Controls-Volume"
               src={
                 isMuted
-                  ? "http://localhost:9090/resources/icons/muted.svg"
-                  : "http://localhost:9090/resources/icons/volume.svg"
+                  ? 'http://localhost:9090/resources/icons/muted.svg'
+                  : 'http://localhost:9090/resources/icons/volume.svg'
               }
               onClick={onMute}
             />
-            <span className="ControlBar-Controls-Title">
-              RAIDER.IO SCORE IS USELESS - Fragnance Stream Highlights
-            </span>
-            <img
-              className="ControlBar-Controls-Settings"
-              src="http://localhost:9090/resources/icons/settings.svg"
-            />
+            <span className="ControlBar-Controls-Title">RAIDER.IO SCORE IS USELESS - Fragnance Stream Highlights</span>
+            <img className="ControlBar-Controls-Settings" src="http://localhost:9090/resources/icons/settings.svg" />
             <img
               className="ControlBar-Controls-AspectRatio"
               src="http://localhost:9090/resources/icons/aspectRatio.svg"
@@ -131,8 +126,8 @@ class ControlBar extends React.Component {
               className="ControlBar-Controls-Fullscreen"
               src={
                 isFullscreen
-                  ? "http://localhost:9090/resources/icons/exitFullscreen.svg"
-                  : "http://localhost:9090/resources/icons/fullscreen.svg"
+                  ? 'http://localhost:9090/resources/icons/exitFullscreen.svg'
+                  : 'http://localhost:9090/resources/icons/fullscreen.svg'
               }
               onClick={onFullscreen}
             />
@@ -162,11 +157,11 @@ ControlBar.propTypes = {
   onMute: PropTypes.func,
   onFullscreen: PropTypes.func,
   onFrameForward: PropTypes.func,
-  onFrameBack: PropTypes.func
+  onFrameBack: PropTypes.func,
 };
 
 ControlBar.defaultPlayer = {
-  onFullscreen() {}
+  onFullscreen() {},
 };
 
 export default ControlBar;
