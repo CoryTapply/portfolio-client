@@ -22,6 +22,12 @@ class VideoPlayer extends React.Component {
 
   videoRef = React.createRef();
 
+  componentDidUpdate(prevProps) {
+    if (this.props.srcUrl !== prevProps.srcUrl) {
+      this.handleLoadAttempt();
+    }
+  }
+
   getCurrentBufferIndex = () => {
     const { current: videoElement } = this.videoRef;
     for (let i = 0; i < videoElement.buffered.length; i++) {
@@ -38,9 +44,9 @@ class VideoPlayer extends React.Component {
   handlePlay = () => {
     const { current: videoElement } = this.videoRef;
 
-    console.log(this.videoRef);
     if (videoElement.paused) {
       videoElement.play();
+      videoElement.volume = 0.2; // TODO: Move this into a slider
       this.props.onShowToast('play');
     } else {
       videoElement.pause();
@@ -126,7 +132,9 @@ class VideoPlayer extends React.Component {
 
   handleLoadAttempt = () => {
     const { current: videoElement } = this.videoRef;
-    videoElement.load();
+    if (videoElement) {
+      videoElement.load();
+    }
   };
 
   handleWaiting = () => {

@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import Card from '../core/Card';
 import './VideoThumbnail.scss';
 
-const VideoThumbnail = ({ handleClick, imageUrl }) => {
+const VideoThumbnail = ({ handleClick, location, videoId }) => {
   const lengthMin = Math.trunc(Math.random() * 100) % 25;
   const lengthSec = (Math.trunc(Math.random() * 100) % 50) + 10;
   const viewCount = Math.floor(Math.random() * 1500) + 1;
   return (
-    <div key={imageUrl} name={imageUrl} onClick={handleClick} className="VideoThumbnail">
+    <div key={videoId} name={videoId} onClick={handleClick} className="VideoThumbnail">
       <Card>
         <div className="VideoThumbnail-Image-Container">
-          <img className="VideoThumbnail-Image" src={imageUrl} />
+          <img className="VideoThumbnail-Image" src={location} />
           <div className="VideoThumbnail-Length">{`${lengthMin}:${lengthSec}`}</div>
           <div className="VideoThumbnail-ViewCount">
             <div className="VideoThumbnail-ViewCount-hack">
@@ -34,12 +34,14 @@ const VideoThumbnail = ({ handleClick, imageUrl }) => {
 
 VideoThumbnail.propTypes = {
   handleClick: PropTypes.func,
-  imageUrl: PropTypes.string,
+  location: PropTypes.string,
+  videoId: PropTypes.string,
 };
 
 VideoThumbnail.defaultProps = {
   handleClick() {},
-  imageUrl: '',
+  location: '',
+  videoId: '',
 };
 
 export default VideoThumbnail;

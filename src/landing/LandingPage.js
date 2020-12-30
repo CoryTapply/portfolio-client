@@ -6,72 +6,24 @@ import './LandingPage.scss';
 
 class LandingPage extends React.Component {
   state = {
-    fullScreenImage: 1,
+    currentVideo: '',
+    videos: []
   };
 
   fullscreenContainerRef = React.createRef();
 
-  images = [
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-    'http://localhost:9090/resources/thumbnails/smalltest1-thumbnail.png',
-  ];
+  componentDidMount() {
+    fetch('http://localhost:9090/getVideos')
+      .then(response => response.json())
+      .then(data => this.setState({ 
+        currentVideo: data?.videos[0]?.videoLocation || '',
+        videos: data.videos || [] 
+      }));
+  }
 
   handleClick = (e) => {
     this.setState({
-      fullScreenImage: Number(e.currentTarget.getAttribute('name')),
+      currentVideo: e.currentTarget.getAttribute('name'),
     });
   };
 
@@ -101,17 +53,16 @@ class LandingPage extends React.Component {
   };
 
   render() {
-    console.log('rendering');
     return (
       <div ref={this.fullscreenContainerRef} className="LandingPage-Container">
         <VideoPlayer
           onFullscreen={this.handleFullscreen}
-          srcUrl="http://localhost:9090/resources/uploaded/smalltest1.mp4"
+          srcUrl={this.state.currentVideo}
         />
         <div className="LandingPage-VideoGrid">
           <Grid>
-            {this.images.map((imageUrl, i) => (
-              <VideoThumbnail key={i} imageUrl={imageUrl} onClick={this.handleClick} />
+            {this.state.videos.map(video => (
+              <VideoThumbnail key={video.thumbnailLocation} videoId={video.videoLocation} location={video.thumbnailLocation} handleClick={this.handleClick} />
             ))}
           </Grid>
         </div>
