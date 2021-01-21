@@ -38,7 +38,7 @@ module.exports = {
     // Generates an HTML file from a template
     // Generates deprecation warning: https://github.com/jantimon/html-webpack-plugin/issues/1501
     new HtmlWebpackPlugin({
-      title: 'webpack Boilerplate',
+      title: 'Cory Tapply Portfolio',
       favicon: paths.src + '/images/favicon.png',
       template: paths.src + '/index.html', // template file
       filename: 'index.html', // output file

@@ -1,3 +1,4 @@
+const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
@@ -38,5 +39,10 @@ module.exports = merge(common, {
   plugins: [
     // Only update what has changed on hot reload
     new webpack.HotModuleReplacementPlugin(),
+
+    // Environment Variables configuration
+    new Dotenv({
+      path: './dev.env'
+    }),
   ],
 });

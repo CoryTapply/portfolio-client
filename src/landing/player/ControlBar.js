@@ -4,6 +4,7 @@ import ProgressBar from './ProgressBar';
 import Button from '../../core/Button';
 import Loading from '../../core/Loading';
 import { withCircularToast } from '../../core/Toast';
+import { hosts } from '../../core/utils/fetchRequest';
 import './ControlBar.scss';
 
 const CURRENT_FRAMERATE = 30;
@@ -92,48 +93,48 @@ class ControlBar extends React.Component {
               className="ControlBar-Controls-Play"
               src={
                 isPlaying
-                  ? 'http://localhost:9090/resources/icons/pause.svg'
-                  : 'http://localhost:9090/resources/icons/play.svg'
+                  ? hosts.MAIN_SERVICE + 'resources/icons/pause.svg'
+                  : hosts.MAIN_SERVICE + 'resources/icons/play.svg'
               }
               onClick={onPlay}
             />
             <img
               className="ControlBar-Controls-Rewind"
-              src="http://localhost:9090/resources/icons/rewindFive.svg"
+              src={hosts.MAIN_SERVICE + 'resources/icons/rewindFive.svg'}
               onClick={onRewind}
             />
             <img
               className="ControlBar-Controls-Forward"
-              src="http://localhost:9090/resources/icons/forwardFive.svg"
+              src={hosts.MAIN_SERVICE + 'resources/icons/forwardFive.svg'}
               onClick={onFastForward}
             />
             <img
               className="ControlBar-Controls-Volume"
               src={
                 isMuted
-                  ? 'http://localhost:9090/resources/icons/muted.svg'
-                  : 'http://localhost:9090/resources/icons/volume.svg'
+                  ? hosts.MAIN_SERVICE + '/resources/icons/muted.svg'
+                  : hosts.MAIN_SERVICE + '/resources/icons/volume.svg'
               }
               onClick={onMute}
             />
             <span className="ControlBar-Controls-Title">RAIDER.IO SCORE IS USELESS - Fragnance Stream Highlights</span>
-            <img className="ControlBar-Controls-Settings" src="http://localhost:9090/resources/icons/settings.svg" />
+            <img className="ControlBar-Controls-Settings" src={hosts.MAIN_SERVICE + 'resources/icons/settings.svg'} />
             <img
               className="ControlBar-Controls-AspectRatio"
-              src="http://localhost:9090/resources/icons/aspectRatio.svg"
+              src={hosts.MAIN_SERVICE + 'resources/icons/aspectRatio.svg'}
             />
             <img
               className="ControlBar-Controls-Fullscreen"
               src={
                 isFullscreen
-                  ? 'http://localhost:9090/resources/icons/exitFullscreen.svg'
-                  : 'http://localhost:9090/resources/icons/fullscreen.svg'
+                  ? hosts.MAIN_SERVICE + '/resources/icons/exitFullscreen.svg'
+                  : hosts.MAIN_SERVICE + '/resources/icons/fullscreen.svg'
               }
               onClick={onFullscreen}
             />
             <img
               className="ControlBar-Controls-ScrollVideo"
-              src="http://localhost:9090/resources/icons/downArrow.svg"
+              src={hosts.MAIN_SERVICE + 'resources/icons/downArrow.svg'}
             />
           </div>
         </div>

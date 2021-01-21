@@ -2,6 +2,7 @@ import React from 'react';
 import VideoPlayer from './player/VideoPlayer';
 import VideoThumbnail from './VideoThumbnail';
 import Grid from '../core/Grid';
+import { request } from '../core/utils/fetchRequest';
 import './LandingPage.scss';
 
 class LandingPage extends React.Component {
@@ -13,8 +14,7 @@ class LandingPage extends React.Component {
   fullscreenContainerRef = React.createRef();
 
   componentDidMount() {
-    fetch('http://localhost:9090/getVideos')
-      .then(response => response.json())
+    request('api/v1/getVideos')
       .then(data => this.setState({ 
         currentVideo: data?.videos[0]?.videoLocation || '',
         videos: data.videos || [] 

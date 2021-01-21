@@ -1,4 +1,5 @@
 import React from 'react';
+import { hosts } from './utils/fetchRequest';
 import './Toast.scss';
 
 const TOAST_DURATION = 50000; // (ms)
@@ -6,7 +7,7 @@ const TOAST_DURATION = 50000; // (ms)
 export const Toast = ({ icon }) => {
   return (
     <div className="Toast">
-      <img className="Toast-Icon" src={`http://localhost:9090/resources/icons/${icon}.svg`} />
+      <img className="Toast-Icon" src={hosts.MAIN_SERVICE + `resources/icons/${icon}.svg`} />
     </div>
   );
 };

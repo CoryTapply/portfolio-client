@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '../core/Card';
+import { hosts } from '../core/utils/fetchRequest';
 import './VideoThumbnail.scss';
 
 const VideoThumbnail = ({ handleClick, location, videoId }) => {
@@ -18,7 +19,7 @@ const VideoThumbnail = ({ handleClick, location, videoId }) => {
               <span>{viewCount}</span>
               <img
                 className="VideoThumbnail-ViewCount-Icon"
-                src="http://localhost:9090/resources/icons/viewCount.svg"
+                src={hosts.MAIN_SERVICE + 'resources/icons/viewCount.svg'}
               />
             </div>
           </div>

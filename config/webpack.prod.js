@@ -1,3 +1,4 @@
+const Dotenv = require('dotenv-webpack');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { merge } = require('webpack-merge');
@@ -9,7 +10,7 @@ module.exports = merge(common, {
   devtool: false,
   output: {
     path: paths.build,
-    publicPath: './',
+    publicPath: './dist',
     filename: 'js/[name].[contenthash].bundle.js',
   },
   module: {
@@ -37,6 +38,11 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: 'styles/[name].[contenthash].css',
       chunkFilename: '[id].css',
+    }),
+
+    // Environment Variables configuration
+    new Dotenv({
+      path: './prod.env'
     }),
   ],
   optimization: {
