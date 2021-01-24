@@ -1,7 +1,46 @@
+@import "../core/utils/variables";
+
 .Footer {
-  &-container {
-    flex-shrink: 0;
-    height: 80px;
+  &-Container {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    background-color: $background-color;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 24px 36px;
+  }
+  &-Icon-Container {
+    height: 36px;
+    display: flex;
+    flex-direction: row;
+    padding: 0 16px;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  &-Icon {
+    width: 52px;
+    margin: 2px 16px;
+      padding: 2px 2px;
+      height: calc(100% - 4px);
+      box-sizing: border-box;
+      transition: background-color 0.2s ease;
+      border-radius: 4px;
+      &:hover {
+        cursor: pointer;
+        // background-color: RGB(64, 68, 73);
+      }
+  }
+  &-Divider { 
+    width: 100%;
+    max-width: 900px; // TODO: Make a constant and find a real number 
+    height: 1px; 
+    background: $secondary-text-color; 
+    content: " ";
+    margin: 10px auto;
+  }
+  &-Copywrite {
+    margin: 8px auto;
+    color: $secondary-text-color;
   }
 }

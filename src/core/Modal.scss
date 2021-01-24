@@ -1,10 +1,11 @@
+@import "../core/utils/variables";
+
 .Modal {
   width: 0;
   height: 0;
   z-index: 1000;
   background: RGB(34, 38, 43);
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
-    0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  box-shadow: $box-shadow-color;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -34,7 +35,7 @@
     color: RGB(255, 255, 255);
 
     &:hover {
-      background: RGB(62, 66, 74);
+      background: $menu-highlight-color;
     }
   }
 
@@ -47,7 +48,7 @@
     z-index: 900;
     top: 0;
     left: 0;
-    background: RGBA(0, 0, 0, 0.7);
+    background: $veil-color;
     transition: opacity 0.15s;
     &.isOpen {
       opacity: 1;

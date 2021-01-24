@@ -4,31 +4,6 @@ import './NavigationBar.scss';
 const NavigationBar = (props) => {
   const links = [
     {
-      name: 'Home',
-      url: '',
-      action() {},
-    },
-    {
-      name: 'Linked-In',
-      url: '',
-      action() {},
-    },
-    {
-      name: 'YouTube',
-      url: '',
-      action() {},
-    },
-    {
-      name: 'Discord',
-      url: '',
-      action() {},
-    },
-    {
-      name: 'Twitter',
-      url: '',
-      action() {},
-    },
-    {
       name: 'Upload',
       url: '',
       action: props.onOpenUploadModal,

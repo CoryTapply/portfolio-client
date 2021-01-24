@@ -1,9 +1,11 @@
+@import "../core/utils/variables";
+
 .Toast {
   position: absolute;
   z-index: 80;
   top: 50%;
   left: 50%;
-  background-color: RGB(30, 30, 30);
+  background-color: $menu-color;
   border-radius: 100%;
   width: 100px;
   height: 100px;

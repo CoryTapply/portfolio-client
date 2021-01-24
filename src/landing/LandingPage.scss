@@ -1,3 +1,5 @@
+@import "../core/utils/variables";
+
 .LandingPage {
   &-Container {
     flex: 1 0 auto;
@@ -5,7 +7,8 @@
     position: relative;
     // background: radial-gradient(ellipse at center, #113666 0%,#332b3a 100%);
     // background: radial-gradient(circle at 70%, #202D4C 0%, #131B2E 65%, #131B2E 100%);
-    background: radial-gradient(circle at 70%, #121212 0%, #131b2e 65%, #131b2e 100%);
+    // background: radial-gradient(circle at 70%, #121212 0%, #131b2e 65%, #131b2e 100%);
+    background: $background-color;
     &:fullscreen {
       overflow: scroll;
       // Remove the Scroll Bar

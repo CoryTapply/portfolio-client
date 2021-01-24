@@ -1,0 +1,75 @@
+@import "../../../core/utils/variables";
+
+.VolumeSlider {
+  position: relative;
+  height: 2px;
+  width: 110px;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  &:hover > &-Handle-Padding {
+    height: 24px;
+    bottom: -10px;
+  }
+  &:hover > &-Visual {
+  }
+  &-Container {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
+  &-Handle-Padding {
+    position: absolute;
+    z-index: 101;
+    height: 16px;
+    width: 100%;
+    bottom: -4;
+    cursor: pointer;
+  }
+  &-Scrubber {
+    position: absolute;
+    z-index: 106;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    top: -5px;
+    right: -6px;
+    background: $primary-text-color;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    &-Active { // Currently not doing anything special here
+      width: 12px;
+      height: 12px;
+      top: -5px;
+      right: -6px;
+    }
+    &-Wrapper { // This gets the scrubber ball into position
+      position: absolute;
+      height: 100%;
+      left: 0;
+    }
+  }
+  &-Visual {
+    position: relative;
+    height: 2px;
+    width: 100%;
+    overflow-x: hidden;
+    background: rgba(255, 255, 255, 0.2);
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    &-Play { // Colored in Portion of the volume bar
+      position: absolute;
+      z-index: 105;
+      height: 100%;
+      width: 100%;
+      background: $primary-text-color;
+      transform-origin: 0 0;
+      border-radius: 0 4px 4px 0;
+      transition: background-color 0.2s ease;
+    }
+  }
+}

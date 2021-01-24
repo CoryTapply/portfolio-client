@@ -1,21 +1,11 @@
-body {
-  // font-family: 'Sofia', cursive;
+@import "../core/utils/variables";
 
-  // font-family: 'Cuprum', sans-serif;
-  // font-family: 'Montserrat Alternates', sans-serif;
-  // font-family: 'Ropa Sans', sans-serif;
-  // font-family: 'PT Sans Caption', sans-serif;
-  font-family: 'Tenali Ramakrishna', sans-serif;
-  // font-family: 'Ubuntu Mono', monospace;
-
-  color: white;
-}
 .NavigationBar {
   &-Container {
     position: relative;
     top: 0;
     z-index: 100;
-    background: RGB(52, 55, 65);
+    background: $background-color;
     height: 50px;
     width: calc(100% - 20%);
     padding: 0 10%;
@@ -68,7 +58,7 @@ body {
     overflow: hidden;
     text-align: center;
     &:hover {
-      background: #5497c7;
+      background: $menu-highlight-color;
       cursor: pointer;
     }
   }

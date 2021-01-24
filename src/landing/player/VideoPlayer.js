@@ -46,7 +46,6 @@ class VideoPlayer extends React.Component {
 
     if (videoElement.paused) {
       videoElement.play();
-      videoElement.volume = 0.2; // TODO: Move this into a slider
       this.props.onShowToast('play');
     } else {
       videoElement.pause();

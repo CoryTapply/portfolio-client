@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ProgressBar from './ProgressBar';
+import VolumeSlider from './videoControls/VolumeSlider';
 import Button from '../../core/Button';
 import Loading from '../../core/Loading';
 import { withCircularToast } from '../../core/Toast';
@@ -117,6 +118,7 @@ class ControlBar extends React.Component {
               }
               onClick={onMute}
             />
+            <VolumeSlider videoRef={videoRef} />
             <span className="ControlBar-Controls-Title">RAIDER.IO SCORE IS USELESS - Fragnance Stream Highlights</span>
             <img className="ControlBar-Controls-Settings" src={hosts.MAIN_SERVICE + 'resources/icons/settings.svg'} />
             <img

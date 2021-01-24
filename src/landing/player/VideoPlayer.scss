@@ -1,3 +1,5 @@
+@import "../../core/utils/variables";
+
 .VideoPlayer {
   &-Container {
     position: relative;
@@ -21,7 +23,7 @@
     z-index: 80;
     height: 100%;
     width: 100%;
-    background: RGB(72, 75, 85);
+    background: $menu-color;
     display: flex;
     flex-direction: column;
     justify-content: center;
