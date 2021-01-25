@@ -107,7 +107,7 @@ class VolumeSlider extends React.Component {
 }
 
 VolumeSlider.propTypes = {
-  videoRef: PropTypes.object.isRequired,
+  videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
 };
 
 VolumeSlider.defaultProps = {};

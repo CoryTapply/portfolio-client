@@ -8,25 +8,27 @@ const VideoThumbnail = ({ handleClick, location, videoId }) => {
   const lengthMin = Math.trunc(Math.random() * 100) % 25;
   const lengthSec = (Math.trunc(Math.random() * 100) % 50) + 10;
   const viewCount = Math.floor(Math.random() * 1500) + 1;
+
+  const videoTitle = 'I came back to MODERN WARFARE just to play SHIPMENT';
   return (
     <div key={videoId} name={videoId} onClick={handleClick} className="VideoThumbnail">
       <Card>
         <div className="VideoThumbnail-Image-Container">
-          <img className="VideoThumbnail-Image" src={location} />
+          <img className="VideoThumbnail-Image" alt="" src={location} />
           <div className="VideoThumbnail-Length">{`${lengthMin}:${lengthSec}`}</div>
           <div className="VideoThumbnail-ViewCount">
             <div className="VideoThumbnail-ViewCount-hack">
               <span>{viewCount}</span>
               <img
                 className="VideoThumbnail-ViewCount-Icon"
+                alt=""
                 src={hosts.MAIN_SERVICE + 'resources/icons/viewCount.svg'}
               />
             </div>
           </div>
-          <div className="VideoThumbnail-Progress" style={{ transform: `scaleX(${Math.random()})` }} />
         </div>
         <div className="VideoThumbnail-Title-Block">
-          <p className="VideoThumbnail-Title-Copy">RAIDER.IO SCORE IS USELESS - Fragnance Stream Highlights</p>
+          <p className="VideoThumbnail-Title-Copy" aria-label={videoTitle} title={videoTitle}>{videoTitle}</p>
         </div>
       </Card>
     </div>

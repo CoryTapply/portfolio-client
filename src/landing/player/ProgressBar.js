@@ -8,6 +8,7 @@ class ProgressBar extends React.Component {
     hoverX: 0,
     hoverTime: 0,
   };
+  
   componentDidMount() {
     window.addEventListener('mousemove', this.handleScrubMove);
     window.addEventListener('mouseup', this.handleScrubUp);
@@ -36,6 +37,7 @@ class ProgressBar extends React.Component {
   handleMouseEnter = () => {
     this.setState({ isHovering: true });
   };
+
   handleMouseleave = () => {
     this.setState({ isHovering: false });
   };
@@ -44,8 +46,7 @@ class ProgressBar extends React.Component {
     const { current: videoElement } = this.props.videoRef;
     const { nativeEvent } = event;
     // Calculate the new time
-    const time =
-      videoElement.duration * ((nativeEvent.pageX - this.getVideoPlayerLeftBound()) / this.getVideoPlayerWidth());
+    const time = videoElement.duration * ((nativeEvent.pageX - this.getVideoPlayerLeftBound()) / this.getVideoPlayerWidth());
 
     // Update the video time
     videoElement.currentTime = time;
@@ -57,9 +58,11 @@ class ProgressBar extends React.Component {
     videoElement.pause();
     this.setState({ isScrubbing: true });
   };
+
   handleScrubUp = () => {
     this.setState({ isScrubbing: false });
   };
+
   handleScrubMove = (event) => {
     if (this.state.isScrubbing) {
       const { current: videoElement } = this.props.videoRef;
@@ -120,7 +123,7 @@ class ProgressBar extends React.Component {
 }
 
 ProgressBar.propTypes = {
-  videoRef: PropTypes.object.isRequired,
+  videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
   currentTime: PropTypes.number.isRequired,
   bufferedEnd: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,

@@ -4,7 +4,7 @@
   width: 0;
   height: 0;
   z-index: 1000;
-  background: RGB(34, 38, 43);
+  background: $background-color;
   box-shadow: $box-shadow-color;
   position: fixed;
   top: 50%;
@@ -32,7 +32,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    color: RGB(255, 255, 255);
+    color: $primary-text-color;
 
     &:hover {
       background: $menu-highlight-color;

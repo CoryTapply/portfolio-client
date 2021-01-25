@@ -146,7 +146,7 @@ class ControlBar extends React.Component {
 }
 
 ControlBar.propTypes = {
-  videoRef: PropTypes.object,
+  videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   duration: PropTypes.number,
   currentTime: PropTypes.number,
   bufferedEnd: PropTypes.number,

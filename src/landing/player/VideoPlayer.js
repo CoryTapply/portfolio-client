@@ -22,6 +22,10 @@ class VideoPlayer extends React.Component {
 
   videoRef = React.createRef();
 
+  componentDidMount() {
+    this.props.setVideoRef(this.videoRef);
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.srcUrl !== prevProps.srcUrl) {
       this.handleLoadAttempt();
@@ -198,10 +202,12 @@ VideoPlayer.propTypes = {
   toastKey: PropTypes.number,
   toastIcon: PropTypes.string,
   srcUrl: PropTypes.string,
+  setVideoRef: PropTypes.func,
 };
 
 VideoPlayer.defaultProps = {
   onFullscreen() {},
+  setVideoRef() {},
 };
 
 export default withToast(VideoPlayer);
