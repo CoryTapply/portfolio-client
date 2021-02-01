@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react';
+import { useUploadVideo } from '../dataProviders/VideoDataAPI';
 import './NavigationBar.scss';
 
-const NavigationBar = (props) => {
+const NavigationBar = () => {
+  const { openModal } = useUploadVideo();
   const links = [
     {
       name: 'Upload',
       url: '',
-      action: props.onOpenUploadModal,
+      action: openModal,
     },
   ];
 

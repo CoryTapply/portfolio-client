@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { hosts } from '../core/utils/fetchRequest';
+import { useStore } from '../dataProviders/StoreProvider';
 import './VideoTrimmer.scss';
 
 const VideoTrimmer = ({ videoRef }) => {
@@ -10,6 +11,9 @@ const VideoTrimmer = ({ videoRef }) => {
   const [selectedWidth, setSelectedWidth] = useState(100);
   const [isScrubbingLeft, setIsScrubbingLeft] = useState(false);
   const [isScrubbingRight, setIsScrubbingRight] = useState(false);
+  const { state, dispatch } = useStore();
+
+  console.log('Global State: ', state);
 
   const getVideoPlayerLeftBound = () => {
     return videoRef.current.getBoundingClientRect().left;
@@ -170,7 +174,7 @@ const VideoTrimmer = ({ videoRef }) => {
 };
 
 VideoTrimmer.propTypes = {
-  videoRef: PropTypes.PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
+  videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
 };
 
 VideoTrimmer.defaultProps = {

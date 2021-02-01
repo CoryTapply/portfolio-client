@@ -4,8 +4,8 @@ import Modal from '../core/Modal';
 import Button from '../core/Button';
 import { request } from '../core/utils/fetchRequest';
 import VideoPlayer from '../landing/player/VideoPlayer';
-import './UploadModal.scss';
 import VideoTrimmer from './VideoTrimmer';
+import './UploadModal.scss';
 
 class UploadModal extends React.Component {
   static propTypes = {
