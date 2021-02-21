@@ -16,6 +16,7 @@ const initVideoData = ({ videoId, videoRef }) => {
       hoverTime: 0,
     },
     uploadVideo: {
+      uploadedFiles: [],
       isModalOpen: false,
       videoId: null,
       videoRef: null,
@@ -34,18 +35,22 @@ const initVideoData = ({ videoId, videoRef }) => {
 };
 
 const dataReducer = (state, action) => {
+  const { current: videoElement } = state?.uploadVideo?.videoRef || {};
   // TODO: Setup some custom events that can happen, Play, Mute Trim, Upload, New Video (Call init func)?
   switch (action.type) {
-    // case 'FETCHING':
-    //   return { ...state, status: 'fetching' };
-    // case 'FETCHED':
-    //   return { ...state, status: 'fetched', data: action.payload };
-    // case 'FETCH_ERROR':
-    //   return { ...state, status: 'error', error: action.payload };
     case 'UploadVideoEvent-Play':
       return { ...state, uploadVideo: { ...state.uploadVideo, isPlaying: true } };
     case 'UploadVideoEvent-Pause':
       return { ...state, uploadVideo: { ...state.uploadVideo, isPlaying: false } };
+    case 'UploadVideoEvent-UploadFiles':
+      return { ...state, uploadVideo: { ...state.uploadVideo, uploadedFiles: [ ...state.uploadVideo.uploadedFiles, ...action.payload ] } };
+    case 'UploadVideoEvent-Trim':
+      if (action.payload.trimStartTime) {
+        videoElement.currentTime = action.payload.trimStartTime;
+      }
+      return { ...state, uploadVideo: { ...state.uploadVideo, videoTrim: { ...state.uploadVideo.videoTrim, ...action.payload } } };
+    case 'UploadVideoEvent-Ref':
+      return { ...state, uploadVideo: { ...state.uploadVideo, videoRef: action.payload } };
     case 'UploadVideoEvent-ModalOpen':
       return { ...state, uploadVideo: { ...state.uploadVideo, isModalOpen: true } };
     case 'UploadVideoEvent-ModalClose':
@@ -58,8 +63,7 @@ const dataReducer = (state, action) => {
 export const StoreProvider = ({ children, initArgs }) => {
   const [state, dispatch] = useReducer(dataReducer, initArgs, initVideoData);
 
-  console.log('GLOBAL STATE');
-  console.log(state);
+  console.log('GLOBAL STATE FROM PROVIDER', state);
 
   return (
     <StoreContext.Provider value={{ state, dispatch }}>

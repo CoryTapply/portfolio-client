@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { hosts } from '../core/utils/fetchRequest';
-import { useStore } from '../dataProviders/StoreProvider';
 import './VideoTrimmer.scss';
 
-const VideoTrimmer = ({ videoRef }) => {
-  const [startTimeSeconds, setStartTimeSeconds] = useState(0);
-  const [endTimeSeconds, setEndTimeSeconds] = useState(0);
+const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTime } }, setTrim }) => {
   const [leftDistance, setLeftDistance] = useState(0);
   const [selectedWidth, setSelectedWidth] = useState(100);
   const [isScrubbingLeft, setIsScrubbingLeft] = useState(false);
   const [isScrubbingRight, setIsScrubbingRight] = useState(false);
-  const { state, dispatch } = useStore();
-
-  console.log('Global State: ', state);
 
   const getVideoPlayerLeftBound = () => {
     return videoRef.current.getBoundingClientRect().left;
@@ -74,20 +68,14 @@ const VideoTrimmer = ({ videoRef }) => {
 
         // Calculate the new time
         const time = videoElement.duration * ((event.pageX - getVideoPlayerLeftBound()) / getVideoPlayerWidth());
-        // Update the video time
-        videoElement.currentTime = time;
-        setStartTimeSeconds(time);
-        console.log('Start Time: ', time)
+        setTrim({ trimStartTime: time });
       }
 
       if (isScrubbingRight) {
         setSelectedWidth(eventLeftDistance - leftDistance);
         // Calculate the end time
         const endTime = videoElement.duration * ((event.pageX - getVideoPlayerLeftBound()) / getVideoPlayerWidth());
-        // Update the video time
-        videoElement.currentTime = endTime;
-        setEndTimeSeconds(endTime);
-        console.log('End Time: ', endTime)
+        setTrim({ trimEndTime: endTime });
       }
     }
   };
@@ -95,27 +83,27 @@ const VideoTrimmer = ({ videoRef }) => {
   const videoTimeLockListener = useCallback(() => {
     const { current: videoElement } = videoRef;
 
-    const roundedEndTime = Math.round((endTimeSeconds + Number.EPSILON) * 100) / 100;
-    const roundedStartTime = Math.round((startTimeSeconds + Number.EPSILON) * 100) / 100;
+    const roundedEndTime = Math.round((trimEndTime + Number.EPSILON) * 100) / 100;
+    const roundedStartTime = Math.round((trimStartTime + Number.EPSILON) * 100) / 100;
     const roundedCurrentTime = Math.round((videoElement.currentTime + Number.EPSILON) * 100) / 100;
 
-    if (endTimeSeconds === 0) {
-      setEndTimeSeconds(videoElement.duration || 0);
+    if (trimEndTime === 0) {
+      setTrim({ trimEndTime: videoElement.duration || 0 });
     }
 
     // Lock the time to the selected Start Time
     if (roundedCurrentTime < roundedStartTime) {
       videoElement.pause();
-      videoElement.currentTime = startTimeSeconds;
+      videoElement.currentTime = trimStartTime;
     }
     // Lock the time to the selected End Time
     if (roundedEndTime > 0 && roundedCurrentTime > roundedEndTime) {
       videoElement.pause();
       if (roundedCurrentTime - roundedEndTime > 0.5) {
-        videoElement.currentTime = endTimeSeconds; // TODO: will need to add the progress lock in progress bar component
+        videoElement.currentTime = trimEndTime; // TODO: will need to add the progress lock in progress bar component
       }
     }
-  }, [videoRef, startTimeSeconds, endTimeSeconds]);
+  }, [videoRef, trimStartTime, trimEndTime, setTrim]);
 
   useEffect(() => {
     const { current: videoElement } = videoRef;
@@ -174,7 +162,11 @@ const VideoTrimmer = ({ videoRef }) => {
 };
 
 VideoTrimmer.propTypes = {
-  videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
+  state: PropTypes.shape({
+    videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
+    videoTrim: PropTypes.shape({ trimStartTime: PropTypes.number, trimEndTime: PropTypes.number }).isRequired,
+  }).isRequired,
+  setTrim: PropTypes.func.isRequired,
 };
 
 VideoTrimmer.defaultProps = {

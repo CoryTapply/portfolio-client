@@ -58,6 +58,7 @@ class LandingPage extends React.Component {
         <VideoPlayer
           onFullscreen={this.handleFullscreen}
           srcUrl={this.state.currentVideo}
+          videoId={this.state.currentVideo}
         />
         <div className="LandingPage-VideoGrid">
           <Grid>

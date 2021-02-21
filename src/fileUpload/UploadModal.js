@@ -1,37 +1,25 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../core/Modal';
 import Button from '../core/Button';
 import { request } from '../core/utils/fetchRequest';
+import { useUploadVideo } from '../dataProviders/VideoDataAPI';
 import VideoPlayer from '../landing/player/VideoPlayer';
 import VideoTrimmer from './VideoTrimmer';
+import AudioWaveform from './AudioWaveform';
 import './UploadModal.scss';
 
-class UploadModal extends React.Component {
-  static propTypes = {
-    isUploadModalOpen: PropTypes.bool.isRequired,
-    onCloseUploadModal: PropTypes.func.isRequired,
+const UploadModal = () => {
+  const { state, closeModal, uploadFiles, setVideoRef, setTrim } = useUploadVideo();
+
+  const handleFiles = event => {
+    const { files } = event.target;
+    uploadFiles(files);
   };
 
-  state = {
-    filesToBeUploaded: [],
-    videoRef: null,
-  };
-
-  inputRef = React.createRef();
-
-  handleFiles = (event) => {
-    const files = event.target.files;
-    console.log(files);
-    this.setState((prevState) => ({
-      filesToBeUploaded: [...prevState.filesToBeUploaded, ...files],
-    }));
-  };
-
-  handleUpload = () => {
+  const handleUpload = () => {
     const data = new FormData();
-    console.log(this.state.filesToBeUploaded[0]);
-    data.append('file', this.state.filesToBeUploaded[0]);
+    data.append('file', state.uploadedFiles[0]);
     data.append('start', '00:02:30');
     data.append('end', '00:03:00');
 
@@ -50,34 +38,30 @@ class UploadModal extends React.Component {
       });
   };
 
-  handleProgress = (asd) => {
-    console.log('more progress', asd);
-  };
+  const { isModalOpen, uploadedFiles, videoRef } = state;
 
-  handleSetVideoRef = (videoRef) => {
-    this.setState({ videoRef });
-  };
+  console.log('RE-RENDERING MODAL');
 
-  render() {
-    console.log('State:', this.state);
-    const { isUploadModalOpen, onCloseUploadModal } = this.props;
+  return (
+    <Modal isOpen={isModalOpen} onCloseModal={closeModal}>
+      <div className="UploadContent">
+        <input type="file" id="input" multiple onChange={handleFiles} />
+        {uploadedFiles[0] && (
+          <Fragment>
+            <VideoPlayer videoId="upload" srcUrl={URL.createObjectURL(uploadedFiles[0])} setVideoRef={setVideoRef} />
+            {/* // // URL.revokeObjectURL() */}
+            {videoRef && <VideoTrimmer state={state} setTrim={setTrim} />}
+            {videoRef && <AudioWaveform state={state} setTrim={setTrim} />}
+          </Fragment>
+        )}
+        <Button onClick={handleUpload}>Upload</Button>
+      </div>
+    </Modal>
+  );
+};
 
-    return (
-      <Modal isOpen={isUploadModalOpen} onCloseModal={onCloseUploadModal}>
-        <div className="UploadContent">
-          <input ref={this.inputRef} type="file" id="input" multiple onChange={this.handleFiles} />
-          {this.state.filesToBeUploaded[0] && (
-            <Fragment>
-              <VideoPlayer srcUrl={URL.createObjectURL(this.state.filesToBeUploaded[0])} setVideoRef={this.handleSetVideoRef} />
-              {/* // // URL.revokeObjectURL() */}
-              {this.state.videoRef && <VideoTrimmer videoRef={this.state.videoRef} />}
-            </Fragment>
-          )}
-          <Button onClick={this.handleUpload}>Upload</Button>
-        </div>
-      </Modal>
-    );
-  }
-}
+UploadModal.propTypes = {};
+
+UploadModal.defaultProps = {};
 
 export default UploadModal;
