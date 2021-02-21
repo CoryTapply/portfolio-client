@@ -5,65 +5,82 @@ import './AudioWaveform.scss';
 
 let count = 0;
 
-const AudioWaveform = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTime } }, setTrim }) => {
+const AudioWaveform = ({ state: { uploadedFiles, videoRef } }) => {
   // const [count, setCount] = useState(0);
   const [selectedWidth, setSelectedWidth] = useState(100);
   const [isScrubbingLeft, setIsScrubbingLeft] = useState(false);
   const [isScrubbingRight, setIsScrubbingRight] = useState(false);
-  const [analyzer, setAnalyzer] = useState(null);
-  
+
   const waveCanvasRef = useRef();
 
-  let data;
-  let context;
-
-  const draw = (dataToDraw) => {
-    const data2 = [...dataToDraw];
-    context.clearRect(0, 0, waveCanvasRef.current.width, waveCanvasRef.current.height);
-    const space = waveCanvasRef.current.width / data2.length;
-    data2.forEach((value,i) => {
-      console.log(value)
-      context.lineWidth = 26;
-      context.strokeStyle = 'orange';
-      context.beginPath();
-      context.moveTo(space*i, waveCanvasRef.current.height); //x,y
-      context.lineTo(space*i, waveCanvasRef.current.height-value); //x,y
-      context.stroke();
-    });
-  };
-
-  const loopingFunction = () => {
-    analyzer.getByteFrequencyData(data);
-    console.log(data)
-    draw(data);
-    // requestAnimationFrame(loopingFunction);
-  };
-
-  if (waveCanvasRef.current) {
-
-    context = waveCanvasRef.current.getContext('2d');
-    if (videoRef.current) {
-      if (count === 0) {
-        console.log(count)
-        count = 1;
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioCtx = new AudioContext();
-        const analyser = audioCtx.createAnalyser();
-        const source = audioCtx.createMediaElementSource(videoRef.current);
-        // const source = audioCtx.createMediaElementSource(videoRef.current);
-        analyser.fftSize = 2048;
-        source.connect(analyser);
-        // analyser.connect(source);
-        analyser.connect(audioCtx.destination);
-        setAnalyzer(analyser);
+  const filterData = audioBuffer => {
+    console.log(audioBuffer);
+    const channelOneData = audioBuffer.getChannelData(0); // We only need to work with one channel of data
+    const channelTwoData = audioBuffer.getChannelData(1); // We only need to work with one channel of data
+    const samples = 500; // Number of samples we want to have in our final data set
+    const blockSize = Math.floor(channelOneData.length / samples); // the number of samples in each subdivision
+    const filteredData = [];
+    for (let i = 0; i < samples; i++) {
+      const blockStart = blockSize * i; // the location of the first sample in the block
+      let sum = 0;
+      for (let j = 0; j < blockSize; j++) {
+        sum += Math.abs(channelOneData[blockStart + j] + channelTwoData[blockStart + j]); // find the sum of all the samples in the block
       }
-      if (analyzer) {
-        data = new Uint8Array(analyzer.frequencyBinCount);
-        requestAnimationFrame(loopingFunction);
-
-      }
+      filteredData.push(sum / blockSize); // divide the sum by the block size to get the average
     }
-  }
+    return filteredData;
+  };
+
+  const normalizeData = filteredData => {
+    const multiplier = Math.max(...filteredData) ** -1;
+    return filteredData.map(n => n * multiplier);
+  };
+
+  useEffect(() => {
+    const drawLineSegment = (ctx, x, y, width, isEven) => {
+      ctx.lineWidth = 1; // how thick the line is
+      ctx.strokeStyle = '#fff'; // what color our line is
+      ctx.beginPath();
+      y = isEven ? y : -y;
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, y);
+      ctx.arc(x + width / 2, y, width / 2, Math.PI, 0, isEven);
+      ctx.lineTo(x + width, 0);
+      ctx.stroke();
+    };
+  
+    const draw = (dataToDraw) => {
+      const canvas = waveCanvasRef.current;
+      const dpr = window.devicePixelRatio || 1;
+      const padding = 1;
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = (canvas.offsetHeight + padding * 2) * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+      ctx.translate(0, canvas.offsetHeight / 2 + padding); // Set Y = 0 to be in the middle of the canvas
+      
+      // draw the line segments
+      const width = canvas.offsetWidth / dataToDraw.length;
+      for (let i = 0; i < dataToDraw.length; i++) {
+        const x = width * i;
+        let height = dataToDraw[i] * canvas.offsetHeight - padding;
+        if (height < 0) {
+          height = 0;
+        } else if (height > canvas.offsetHeight / 2) {
+          height = height > canvas.offsetHeight / 2;
+        }
+        drawLineSegment(ctx, x, height, width, (i + 1) % 2);
+      }
+    };
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    console.log(uploadedFiles[0])
+    uploadedFiles[0].arrayBuffer()
+      .then(arrayBuffer  =>  audioCtx.decodeAudioData(arrayBuffer))
+      .then(decodedAudioData => draw(normalizeData(filterData(decodedAudioData))));
+
+  }, [uploadedFiles]);
 
   return (
     <div
