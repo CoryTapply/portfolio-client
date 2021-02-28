@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../core/Modal';
 import Button from '../core/Button';
@@ -10,7 +10,25 @@ import AudioWaveform from './AudioWaveform';
 import './UploadModal.scss';
 
 const UploadModal = () => {
-  const { state, closeModal, uploadFiles, setVideoRef, setTrim, getVideoPlayerLeftBound, getVideoPlayerWidth } = useUploadVideo();
+  const { state,
+    closeModal,
+    uploadFiles,
+    setTrim,
+    play,
+    pause,
+    toggleMute,
+    setVideoRef,
+    fastFoward,
+    rewind,
+    frameForward,
+    frameBack,
+    setTime,
+    setMetadata,
+    getVideoPlayerLeftBound,
+    getVideoPlayerWidth
+  } = useUploadVideo();
+
+  const fullscreenContainerRef = useRef();
 
   const handleFiles = event => {
     const { files } = event.target;
@@ -38,17 +56,56 @@ const UploadModal = () => {
       });
   };
 
-  const { isModalOpen, uploadedFiles, videoRef } = state;
+  const handleFullscreen = () => {
+    const { current: container } = fullscreenContainerRef;
+    if (document.fullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        /* Firefox */
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        /* IE/Edge */
+        document.msExitFullscreen();
+      }
+    }
+    if (container.requestFullscreen) {
+      container.requestFullscreen();
+    } else if (container.mozRequestFullScreen) {
+      container.mozRequestFullScreen(); // Firefox
+    } else if (container.webkitRequestFullscreen) {
+      container.webkitRequestFullscreen(); // Chrome and Safari
+    }
+    setMetadata({ isFullscreen: !document.fullscreenElement });
+  };
 
-  console.log('RE-RENDERING MODAL');
+  const { isModalOpen, uploadedFiles, videoRef } = state;
 
   return (
     <Modal isOpen={isModalOpen} onCloseModal={closeModal}>
-      <div className="UploadContent">
+      <div className="UploadContent" ref={fullscreenContainerRef}>
         <input type="file" id="input" multiple onChange={handleFiles} />
         {uploadedFiles[0] && (
           <Fragment>
-            <VideoPlayer videoId="upload" srcUrl={URL.createObjectURL(uploadedFiles[0])} setVideoRef={setVideoRef} />
+            <VideoPlayer
+              onFullscreen={handleFullscreen}
+              videoId="upload"
+              srcUrl={URL.createObjectURL(uploadedFiles[0])}
+              videoState={state}
+              play={play}
+              pause={pause}
+              toggleMute={toggleMute}
+              setVideoRef={setVideoRef}
+              fastFoward={fastFoward}
+              rewind={rewind}
+              frameForward={frameForward}
+              frameBack={frameBack}
+              setTime={setTime}
+              setMetadata={setMetadata}
+            />
             {/* // // URL.revokeObjectURL() */}
             {videoRef && (
               <VideoTrimmer 

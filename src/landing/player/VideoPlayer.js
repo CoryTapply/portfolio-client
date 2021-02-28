@@ -4,11 +4,10 @@ import ControlBar from './ControlBar';
 import Button from '../../core/Button';
 import Loading from '../../core/Loading';
 import { withToast, Toast } from '../../core/Toast';
-import { useVideo } from '../../dataProviders/VideoDataAPI';
 import './VideoPlayer.scss';
 
 const VideoPlayer = props => {
-  const { state, play, pause, toggleMute, setVideoRef, fastFoward, rewind, frameForward, frameBack, setTime, setMetadata } = useVideo();
+  const { videoState, play, pause, toggleMute, setVideoRef, fastFoward, rewind, frameForward, frameBack, setTime, setMetadata } = props;
 
   const videoRef = useRef();
 
@@ -122,9 +121,9 @@ const VideoPlayer = props => {
 
   useEffect(() => {
     handleLoadAttempt();
-  }, [state.currentVideo.videoId]);
+  }, [videoState.videoId]);
 
-  const { duration, currentTime, bufferedEnd, isPlaying, isLoading, isMuted, isFullscreen, hasError } = state.currentVideo;
+  const { duration, currentTime, bufferedEnd, isPlaying, isLoading, isMuted, isFullscreen, hasError } = videoState;
   return (
     <Fragment>
       <div className="VideoPlayer-Container">
@@ -182,14 +181,34 @@ VideoPlayer.propTypes = {
   toastIcon: PropTypes.string,
   srcUrl: PropTypes.string,
   videoId: PropTypes.string,
+  videoState: PropTypes.object,
+  play: PropTypes.func,
+  pause: PropTypes.func,
+  toggleMute: PropTypes.func,
   setVideoRef: PropTypes.func,
+  fastFoward: PropTypes.func,
+  rewind: PropTypes.func,
+  frameForward: PropTypes.func,
+  frameBack: PropTypes.func,
+  setTime: PropTypes.func,
+  setMetadata: PropTypes.func,
 };
 
 VideoPlayer.defaultProps = {
   videoId: '',
-  onFullscreen() {},
-  onShowToast() {},
-  setVideoRef() {},
+  onFullscreen: () => console.log('Default PROP! No action taken.'),
+  onShowToast: () => console.log('Default PROP! No action taken.'),
+  videoState: {},
+  play: () => console.log('Default PROP! No action taken.'),
+  pause: () => console.log('Default PROP! No action taken.'),
+  toggleMute: () => console.log('Default PROP! No action taken.'),
+  setVideoRef: () => console.log('Default PROP! No action taken.'),
+  fastFoward: () => console.log('Default PROP! No action taken.'),
+  rewind: () => console.log('Default PROP! No action taken.'),
+  frameForward: () => console.log('Default PROP! No action taken.'),
+  frameBack: () => console.log('Default PROP! No action taken.'),
+  setTime: () => console.log('Default PROP! No action taken.'),
+  setMetadata: () => console.log('Default PROP! No action taken.'),
 };
 
 export default withToast(VideoPlayer);

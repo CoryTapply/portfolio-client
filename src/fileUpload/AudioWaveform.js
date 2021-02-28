@@ -7,7 +7,8 @@ const AudioWaveform = ({
     uploadedFiles, 
     videoRef, 
     currentTime, 
-    videoTrim: { 
+    isFullscreen,
+    videoTrim: {
       trimStartTime, 
       selectedWidth, 
       leftDistance 
@@ -16,6 +17,7 @@ const AudioWaveform = ({
   getVideoPlayerWidth 
 }) => {
   const [pixelRatio] = useState(window?.devicePixelRatio || 1);
+  const videoPlayerWidth = getVideoPlayerWidth();
 
   const waveCanvasRef = useRef();
   const selectedTimeCanvasRef = useRef();
@@ -86,7 +88,7 @@ const AudioWaveform = ({
 
   useEffect(() => {
     const canvas = selectedTimeCanvasRef.current;
-  
+      
     const padding = 2;
     canvas.width = canvas.offsetWidth * pixelRatio;
     canvas.height = (canvas.offsetHeight + padding * 2) * pixelRatio;
@@ -100,8 +102,7 @@ const AudioWaveform = ({
     ctx.fillStyle = 'RGBA(255, 255, 255, 0.35)';
     ctx.fillRect(leftDistance, 2, selectedWidth, canvas.offsetHeight);
 
-    // TODO: Update to current time
-    const videoProgressX = getVideoPlayerWidth() *  (trimStartTime + 10)/videoRef.current.duration;
+    const videoProgressX = videoPlayerWidth * currentTime / 100;
     // Current Time Marker
     ctx.lineWidth = 1;
     ctx.lineCap = 'round';
@@ -111,7 +112,7 @@ const AudioWaveform = ({
     ctx.lineTo(videoProgressX, canvas.offsetHeight);
     ctx.stroke();
 
-  }, [currentTime, selectedWidth, leftDistance, pixelRatio, videoRef, getVideoPlayerWidth, trimStartTime]);
+  }, [currentTime, selectedWidth, leftDistance, pixelRatio, videoRef, videoPlayerWidth, isFullscreen]);
 
   return (
     <div

@@ -16,4 +16,18 @@
   & video {
     max-height: 60vh;
   }
+  &:fullscreen {
+    & video {
+      max-height: calc(100vh - 116px);
+    }
+    overflow: scroll;
+    // Remove the Scroll Bar
+    &::-webkit-scrollbar {
+      width: 0px; /* Remove scrollbar space */
+      height: 0px; /* Remove scrollbar space */
+      background: transparent; /* Optional: just make scrollbar invisible */
+    }
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }

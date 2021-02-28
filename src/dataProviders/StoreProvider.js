@@ -25,6 +25,7 @@ const initVideoData = ({ videoId, videoRef }) => {
       isModalOpen: false,
       videoId: null,
       videoRef: null,
+      frameRate: 30,
       duration: 0,
       isPlaying: false,
       isMuted: false,
@@ -32,6 +33,9 @@ const initVideoData = ({ videoId, videoRef }) => {
       isFullscreen: false,
       currentTime: 0,
       hoverTime: 0,
+      bufferedEnd: 0,
+      hasError: false,
+      isLoading: false,
       videoTrim: {
         trimStartTime: 0,
         trimEndTime: 0,
@@ -85,9 +89,30 @@ const dataReducer = (state, action) => {
 
     // -------- UPLOAD VIDEO -------- //
     case 'UploadVideoEvent-Play':
+      uploadVideoElement.play();
       return { ...state, uploadVideo: { ...state.uploadVideo, isPlaying: true } };
     case 'UploadVideoEvent-Pause':
+      uploadVideoElement.pause();
       return { ...state, uploadVideo: { ...state.uploadVideo, isPlaying: false } };
+    case 'UploadVideoEvent-ToggleMute':
+      uploadVideoElement.muted = action.payload;
+      return { ...state, uploadVideo: { ...state.uploadVideo, isMuted: action.payload } };
+    case 'UploadVideoEvent-FastForward':
+      uploadVideoElement.currentTime += 5;
+      return { ...state, uploadVideo: { ...state.uploadVideo } };
+    case 'UploadVideoEvent-Rewind':
+      uploadVideoElement.currentTime -= 5;
+      return { ...state, uploadVideo: { ...state.uploadVideo } };
+    case 'UploadVideoEvent-FrameForward':
+      uploadVideoElement.currentTime += 1 / state.uploadVideo.frameRate;
+      uploadVideoElement.pause();
+      return { ...state, uploadVideo: { ...state.uploadVideo } };
+    case 'UploadVideoEvent-FrameBack':
+      uploadVideoElement.currentTime -= 1 / state.uploadVideo.frameRate;
+      uploadVideoElement.pause();
+      return { ...state, uploadVideo: { ...state.uploadVideo } };
+    case 'UploadVideoEvent-TimeUpdate':
+      return { ...state, uploadVideo: { ...state.uploadVideo, currentTime: action.payload, isLoading: false } };
     case 'UploadVideoEvent-UploadFiles':
       return { ...state, uploadVideo: { ...state.uploadVideo, uploadedFiles: [ ...state.uploadVideo.uploadedFiles, ...action.payload ] } };
     case 'UploadVideoEvent-Trim':
@@ -103,6 +128,8 @@ const dataReducer = (state, action) => {
         uploadVideoElement.currentTime = action.payload.trimStartTime;
       }
       return { ...state, uploadVideo: { ...state.uploadVideo, videoTrim: { ...state.uploadVideo.videoTrim, ...action.payload } } };
+    case 'UploadVideoEvent-Metadata':
+      return { ...state, uploadVideo: { ...state.uploadVideo, ...action.payload } };
     case 'UploadVideoEvent-Ref':
       return { ...state, uploadVideo: { ...state.uploadVideo, videoRef: action.payload } };
     case 'UploadVideoEvent-ModalOpen':
@@ -110,6 +137,7 @@ const dataReducer = (state, action) => {
     case 'UploadVideoEvent-ModalClose':
       return { ...state, uploadVideo: { ...state.uploadVideo, isModalOpen: false } };
     default:
+      console.error('No Reducer Action Case Found!!!');
       return { ...state, ...action.payload };
   }
 };

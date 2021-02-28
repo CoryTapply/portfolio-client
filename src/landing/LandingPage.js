@@ -7,7 +7,21 @@ import { request } from '../core/utils/fetchRequest';
 import './LandingPage.scss';
 
 const LandingPage = () => {
-  const { state, setCurrentVideo, setOtherVideos, setMetadata } = useVideo();
+  const {
+    state,
+    play,
+    pause,
+    toggleMute,
+    setVideoRef,
+    fastFoward,
+    rewind,
+    frameForward,
+    frameBack,
+    setTime,
+    setCurrentVideo,
+    setOtherVideos,
+    setMetadata,
+  } = useVideo();
 
   const fullscreenContainerRef = useRef();
 
@@ -42,23 +56,33 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
-    request('api/v1/getVideos')
-      .then(data => {
-        setCurrentVideo(data?.videos[0]?.videoLocation || '');
-        setOtherVideos(data.videos || []);
-      });
+    request('api/v1/getVideos').then((data) => {
+      setCurrentVideo(data?.videos[0]?.videoLocation || '');
+      setOtherVideos(data.videos || []);
+    });
   }, []);
 
   return (
     <div ref={fullscreenContainerRef} className="LandingPage-Container">
-      <VideoPlayer
+      <VideoPlayer 
         onFullscreen={handleFullscreen}
         srcUrl={state.currentVideo.videoId}
-        videoId={state.currentVideo.videoId}
+        videoId={state.currentVideo.videoId} 
+        videoState={state.currentVideo}
+        play={play}
+        pause={pause}
+        toggleMute={toggleMute}
+        setVideoRef={setVideoRef}
+        fastFoward={fastFoward}
+        rewind={rewind}
+        frameForward={frameForward}
+        frameBack={frameBack}
+        setTime={setTime}
+        setMetadata={setMetadata}
       />
       <div className="LandingPage-VideoGrid">
         <Grid>
-          {state.otherVideos.map(video => (
+          {state.otherVideos.map((video) => (
             <VideoThumbnail key={video.thumbnailLocation} videoId={video.videoLocation} location={video.thumbnailLocation} handleClick={handleClick} />
           ))}
         </Grid>
