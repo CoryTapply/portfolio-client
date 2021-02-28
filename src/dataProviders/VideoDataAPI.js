@@ -14,6 +14,8 @@ export const useUploadVideo = () => {
     uploadFiles: payload => dispatch({ type: 'UploadVideoEvent-UploadFiles', payload }),
     openModal:        () => dispatch({ type: 'UploadVideoEvent-ModalOpen' }),
     closeModal:       () => dispatch({ type: 'UploadVideoEvent-ModalClose' }),
+    getVideoPlayerLeftBound: () => state.uploadVideo.videoRef.current.getBoundingClientRect().left,
+    getVideoPlayerWidth:     () => state.uploadVideo.videoRef.current.getBoundingClientRect().width,
   };
 };
 

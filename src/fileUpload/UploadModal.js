@@ -10,7 +10,7 @@ import AudioWaveform from './AudioWaveform';
 import './UploadModal.scss';
 
 const UploadModal = () => {
-  const { state, closeModal, uploadFiles, setVideoRef, setTrim } = useUploadVideo();
+  const { state, closeModal, uploadFiles, setVideoRef, setTrim, getVideoPlayerLeftBound, getVideoPlayerWidth } = useUploadVideo();
 
   const handleFiles = event => {
     const { files } = event.target;
@@ -50,8 +50,22 @@ const UploadModal = () => {
           <Fragment>
             <VideoPlayer videoId="upload" srcUrl={URL.createObjectURL(uploadedFiles[0])} setVideoRef={setVideoRef} />
             {/* // // URL.revokeObjectURL() */}
-            {videoRef && <VideoTrimmer state={state} setTrim={setTrim} />}
-            {videoRef && <AudioWaveform state={state} setTrim={setTrim} />}
+            {videoRef && (
+              <VideoTrimmer 
+                state={state} 
+                setTrim={setTrim}
+                getVideoPlayerLeftBound={getVideoPlayerLeftBound}
+                getVideoPlayerWidth={getVideoPlayerWidth}  
+              />
+            )}
+            {videoRef && (
+              <AudioWaveform 
+                state={state} 
+                setTrim={setTrim}
+                getVideoPlayerLeftBound={getVideoPlayerLeftBound}
+                getVideoPlayerWidth={getVideoPlayerWidth} 
+              />
+            )}
           </Fragment>
         )}
         <Button onClick={handleUpload}>Upload</Button>

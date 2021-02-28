@@ -3,19 +3,11 @@ import PropTypes from 'prop-types';
 import { hosts } from '../core/utils/fetchRequest';
 import './VideoTrimmer.scss';
 
-const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTime } }, setTrim }) => {
-  const [leftDistance, setLeftDistance] = useState(0);
-  const [selectedWidth, setSelectedWidth] = useState(100);
+const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTime, selectedWidth, leftDistance } }, setTrim, getVideoPlayerLeftBound, getVideoPlayerWidth }) => {
+  // const [leftDistance, setLeftDistance] = useState(0);
+  // const [selectedWidth, setSelectedWidth] = useState(100);
   const [isScrubbingLeft, setIsScrubbingLeft] = useState(false);
   const [isScrubbingRight, setIsScrubbingRight] = useState(false);
-
-  const getVideoPlayerLeftBound = () => {
-    return videoRef.current.getBoundingClientRect().left;
-  };
-
-  const getVideoPlayerWidth = () => {
-    return videoRef.current.getBoundingClientRect().width;
-  };
 
   const handleScrubDownLeft = () => {
     console.log('Begin Scrub Left');
@@ -41,12 +33,13 @@ const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTi
     const eventLeftDistance = nativeEvent.pageX - getVideoPlayerLeftBound();
 
     if (isScrubbingLeft) {
-      setLeftDistance(eventLeftDistance);
-      setSelectedWidth(selectedWidth - (eventLeftDistance - leftDistance));
+      setTrim({ selectedWidth: selectedWidth - (eventLeftDistance - leftDistance), leftDistance: eventLeftDistance });
+
     }
 
     if (isScrubbingRight) {
-      setSelectedWidth(eventLeftDistance - leftDistance);
+      setTrim({ selectedWidth: eventLeftDistance - leftDistance });
+
     }
 
     const time =
@@ -63,19 +56,15 @@ const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTi
       const eventLeftDistance = event.pageX - getVideoPlayerLeftBound();
 
       if (isScrubbingLeft) {
-        setLeftDistance(eventLeftDistance);
-        setSelectedWidth(selectedWidth - (eventLeftDistance - leftDistance));
-
         // Calculate the new time
         const time = videoElement.duration * ((event.pageX - getVideoPlayerLeftBound()) / getVideoPlayerWidth());
-        setTrim({ trimStartTime: time });
+        setTrim({ trimStartTime: time, selectedWidth: selectedWidth - (eventLeftDistance - leftDistance), leftDistance: eventLeftDistance });
       }
 
       if (isScrubbingRight) {
-        setSelectedWidth(eventLeftDistance - leftDistance);
         // Calculate the end time
         const endTime = videoElement.duration * ((event.pageX - getVideoPlayerLeftBound()) / getVideoPlayerWidth());
-        setTrim({ trimEndTime: endTime });
+        setTrim({ trimEndTime: endTime, selectedWidth: eventLeftDistance - leftDistance });
       }
     }
   };
@@ -164,9 +153,11 @@ const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTi
 VideoTrimmer.propTypes = {
   state: PropTypes.shape({
     videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
-    videoTrim: PropTypes.shape({ trimStartTime: PropTypes.number, trimEndTime: PropTypes.number }).isRequired,
+    videoTrim: PropTypes.shape({ trimStartTime: PropTypes.number, trimEndTime: PropTypes.number, selectedWidth: PropTypes.number, leftDistance: PropTypes.number }).isRequired,
   }).isRequired,
   setTrim: PropTypes.func.isRequired,
+  getVideoPlayerLeftBound: PropTypes.func.isRequired,
+  getVideoPlayerWidth: PropTypes.func.isRequired,
 };
 
 VideoTrimmer.defaultProps = {

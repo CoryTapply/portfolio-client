@@ -8,6 +8,7 @@ const initVideoData = ({ videoId, videoRef }) => {
     currentVideo: {
       videoId,
       videoRef,
+      duration: 0,
       isPlaying: false,
       isMuted: false,
       volumePercent: 100,
@@ -20,6 +21,7 @@ const initVideoData = ({ videoId, videoRef }) => {
       isModalOpen: false,
       videoId: null,
       videoRef: null,
+      duration: 0,
       isPlaying: false,
       isMuted: false,
       volumePercent: 100,
@@ -29,6 +31,8 @@ const initVideoData = ({ videoId, videoRef }) => {
       videoTrim: {
         trimStartTime: 0,
         trimEndTime: 0,
+        selectedWidth: 100,
+        leftDistance: 0,
       },
     },
   };
@@ -45,6 +49,13 @@ const dataReducer = (state, action) => {
     case 'UploadVideoEvent-UploadFiles':
       return { ...state, uploadVideo: { ...state.uploadVideo, uploadedFiles: [ ...state.uploadVideo.uploadedFiles, ...action.payload ] } };
     case 'UploadVideoEvent-Trim':
+      if (action.payload.selectedWidth !== undefined && action.payload.selectedWidth < 30) {
+        action.payload.selectedWidth = 30;
+        return { ...state };
+      }
+      if (action.payload.leftDistance && action.payload.leftDistance < 0) {
+        action.payload.leftDistance = 0;
+      }
       if (action.payload.trimStartTime) {
         videoElement.currentTime = action.payload.trimStartTime;
       }

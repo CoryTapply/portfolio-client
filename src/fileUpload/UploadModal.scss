@@ -1,4 +1,19 @@
 .UploadContent {
-  width: 800px;
-  height: 600px;
+  max-width: 1800px;
+  min-width: 800px;
+  width: 65vw;
+  max-height: 80vh;
+  min-height: 60vh;
+  overflow-y: scroll;
+  // Remove the Scroll Bar
+  &::-webkit-scrollbar {
+    width: 0px; /* Remove scrollbar space */
+    height: 0px; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  & video {
+    max-height: 60vh;
+  }
 }
