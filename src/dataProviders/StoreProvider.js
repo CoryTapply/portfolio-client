@@ -12,7 +12,7 @@ const initVideoData = ({ videoId, videoRef }) => {
       duration: 0,
       isPlaying: false,
       isMuted: false,
-      volumePercent: 100,
+      volumePercent: 20,
       isFullscreen: false,
       currentTime: 0,
       hoverTime: 0,
@@ -78,6 +78,10 @@ const dataReducer = (state, action) => {
       return { ...state, currentVideo: { ...state.currentVideo } };
     case 'VideoEvent-TimeUpdate':
       return { ...state, currentVideo: { ...state.currentVideo, currentTime: action.payload, isLoading: false } };
+    case 'VideoEvent-Volume':
+      currentVideoElement.muted = false;
+      currentVideoElement.volume = action.payload / 100;
+      return { ...state, currentVideo: { ...state.currentVideo, volumePercent: action.payload, isMuted: false } };
     case 'VideoEvent-Metadata':
       return { ...state, currentVideo: { ...state.currentVideo, ...action.payload } };
     case 'VideoEvent-CurrentVideo':
@@ -113,6 +117,10 @@ const dataReducer = (state, action) => {
       return { ...state, uploadVideo: { ...state.uploadVideo } };
     case 'UploadVideoEvent-TimeUpdate':
       return { ...state, uploadVideo: { ...state.uploadVideo, currentTime: action.payload, isLoading: false } };
+    case 'UploadVideoEvent-Volume':
+      uploadVideoElement.muted = false;
+      uploadVideoElement.volume = action.payload / 100;
+      return { ...state, uploadVideo: { ...state.uploadVideo, volumePercent: action.payload, isMuted: false } };
     case 'UploadVideoEvent-UploadFiles':
       return { ...state, uploadVideo: { ...state.uploadVideo, uploadedFiles: [ ...state.uploadVideo.uploadedFiles, ...action.payload ] } };
     case 'UploadVideoEvent-Trim':

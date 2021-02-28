@@ -7,7 +7,7 @@ import { withToast, Toast } from '../../core/Toast';
 import './VideoPlayer.scss';
 
 const VideoPlayer = props => {
-  const { videoState, play, pause, toggleMute, setVideoRef, fastFoward, rewind, frameForward, frameBack, setTime, setMetadata } = props;
+  const { videoState, play, pause, toggleMute, setVideoRef, fastFoward, rewind, frameForward, frameBack, setTime, setMetadata, setVolume } = props;
 
   const videoRef = useRef();
 
@@ -123,7 +123,7 @@ const VideoPlayer = props => {
     handleLoadAttempt();
   }, [videoState.videoId]);
 
-  const { duration, currentTime, bufferedEnd, isPlaying, isLoading, isMuted, isFullscreen, hasError } = videoState;
+  const { duration, currentTime, bufferedEnd, isPlaying, isLoading, isMuted, volumePercent, isFullscreen, hasError } = videoState;
   return (
     <Fragment>
       <div className="VideoPlayer-Container">
@@ -160,6 +160,7 @@ const VideoPlayer = props => {
         bufferedEnd={bufferedEnd}
         isPlaying={isPlaying}
         isMuted={isMuted}
+        volumePercent={volumePercent}
         isFullscreen={isFullscreen}
         onFullscreen={props.onFullscreen}
         onUpdateTimeManual={handleUpdateTimeManual}
@@ -169,6 +170,7 @@ const VideoPlayer = props => {
         onMute={handleMute}
         onFrameForward={handleFrameForward}
         onFrameBack={handleFrameBack}
+        setVolume={setVolume}
       />
     </Fragment>
   );
@@ -192,6 +194,7 @@ VideoPlayer.propTypes = {
   frameBack: PropTypes.func,
   setTime: PropTypes.func,
   setMetadata: PropTypes.func,
+  setVolume: PropTypes.func,
 };
 
 VideoPlayer.defaultProps = {
@@ -209,6 +212,7 @@ VideoPlayer.defaultProps = {
   frameBack: () => console.log('Default PROP! No action taken.'),
   setTime: () => console.log('Default PROP! No action taken.'),
   setMetadata: () => console.log('Default PROP! No action taken.'),
+  setVolume: () => console.log('Default PROP! No action taken.'),
 };
 
 export default withToast(VideoPlayer);

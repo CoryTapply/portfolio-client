@@ -8,8 +8,6 @@ import { withCircularToast } from '../../core/Toast';
 import { hosts } from '../../core/utils/fetchRequest';
 import './ControlBar.scss';
 
-const CURRENT_FRAMERATE = 30;
-
 class ControlBar extends React.Component {
   componentDidMount() {
     // document.addEventListener('fullscreenchange', this.listenFullscreen);
@@ -70,6 +68,7 @@ class ControlBar extends React.Component {
       bufferedEnd,
       isPlaying,
       isMuted,
+      volumePercent,
       isFullscreen,
       onUpdateTimeManual,
       onPlay,
@@ -77,6 +76,7 @@ class ControlBar extends React.Component {
       onFastForward,
       onMute,
       onFullscreen,
+      setVolume,
     } = this.props;
     return (
       <Fragment>
@@ -117,7 +117,7 @@ class ControlBar extends React.Component {
               }
               onClick={onMute}
             />
-            <VolumeSlider videoRef={videoRef} />
+            <VolumeSlider videoRef={videoRef} volumePercent={volumePercent} setVolume={setVolume} />
             <span className="ControlBar-Controls-Title">RAIDER.IO SCORE IS USELESS - Fragnance Stream Highlights</span>
             <img className="ControlBar-Controls-Settings" src={hosts.MAIN_SERVICE + 'resources/icons/settings.svg'} />
             <img
@@ -151,6 +151,7 @@ ControlBar.propTypes = {
   bufferedEnd: PropTypes.number,
   isPlaying: PropTypes.bool,
   isMuted: PropTypes.bool,
+  volumePercent: PropTypes.number,
   isFullscreen: PropTypes.bool,
   onUpdateTimeManual: PropTypes.func,
   onPlay: PropTypes.func,
@@ -160,6 +161,7 @@ ControlBar.propTypes = {
   onFullscreen: PropTypes.func,
   onFrameForward: PropTypes.func,
   onFrameBack: PropTypes.func,
+  setVolume: PropTypes.func,
 };
 
 ControlBar.defaultPlayer = {

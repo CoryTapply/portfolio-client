@@ -21,6 +21,7 @@ const LandingPage = () => {
     setCurrentVideo,
     setOtherVideos,
     setMetadata,
+    setVolume,
   } = useVideo();
 
   const fullscreenContainerRef = useRef();
@@ -79,6 +80,7 @@ const LandingPage = () => {
         frameBack={frameBack}
         setTime={setTime}
         setMetadata={setMetadata}
+        setVolume={setVolume}
       />
       <div className="LandingPage-VideoGrid">
         <Grid>

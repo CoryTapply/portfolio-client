@@ -5,7 +5,6 @@ import './VolumeSlider.scss';
 class VolumeSlider extends React.Component {
   state = {
     isScrubbing: false,
-    volumePercent: 20,
     hoverX: 0,
     hoverTime: 0,
   };
@@ -15,6 +14,8 @@ class VolumeSlider extends React.Component {
   componentDidMount() {
     window.addEventListener('mousemove', this.handleScrubMove);
     window.addEventListener('mouseup', this.handleScrubUp);
+    const { current: videoElement } = this.props.videoRef;
+    videoElement.volume = this.props.volumePercent / 100;
   }
 
   componentWillUnmount() {
@@ -39,13 +40,10 @@ class VolumeSlider extends React.Component {
   };
 
   handleScrub = (event) => {
-    const { current: videoElement } = this.props.videoRef;
     // Calculate the Volume Percent
     const volumePercent = (event.pageX - this.getVolumeSliderLeftBound()) / this.getVolumeSliderWidth();
 
-    // Update the video volume
-    videoElement.volume = volumePercent;
-
+    this.props.setVolume(volumePercent * 100);
     this.handleMouseover(event); // Super hack
   };
 
@@ -60,12 +58,9 @@ class VolumeSlider extends React.Component {
 
   handleScrubMove = (event) => {
     if (this.state.isScrubbing) {
-      const { current: videoElement } = this.props.videoRef;
       // Calculate the Volume Percent
       const volumePercent = (event.pageX - this.getVolumeSliderLeftBound()) / this.getVolumeSliderWidth();
-
-      // Update the video volume
-      videoElement.volume = volumePercent;
+      this.props.setVolume(volumePercent * 100);
     }
   };
 
@@ -108,6 +103,8 @@ class VolumeSlider extends React.Component {
 
 VolumeSlider.propTypes = {
   videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
+  volumePercent: PropTypes.number.isRequired,
+  setVolume: PropTypes.func.isRequired,
 };
 
 VolumeSlider.defaultProps = {};
