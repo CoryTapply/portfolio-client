@@ -1,39 +1,19 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ControlBar from './ControlBar';
 import Button from '../../core/Button';
 import Loading from '../../core/Loading';
 import { withToast, Toast } from '../../core/Toast';
+import { useVideo } from '../../dataProviders/VideoDataAPI';
 import './VideoPlayer.scss';
 
-const CURRENT_FRAMERATE = 30;
+const VideoPlayer = props => {
+  const { state, play, pause, toggleMute, setVideoRef, fastFoward, rewind, frameForward, frameBack, setTime, setMetadata } = useVideo();
 
-class VideoPlayer extends React.Component {
-  state = {
-    duration: 0,
-    currentTime: 0,
-    bufferedEnd: 0,
-    isPlaying: false,
-    isLoading: false,
-    isMuted: false,
-    isFullscreen: false,
-    hasError: false,
-  };
+  const videoRef = useRef();
 
-  videoRef = React.createRef();
-
-  componentDidMount() {
-    this.props.setVideoRef(this.videoRef);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.videoId !== prevProps.videoId) {
-      this.handleLoadAttempt();
-    }
-  }
-
-  getCurrentBufferIndex = () => {
-    const { current: videoElement } = this.videoRef;
+  const getCurrentBufferIndex = () => {
+    const { current: videoElement } = videoRef;
     for (let i = 0; i < videoElement.buffered.length; i++) {
       if (
         videoElement.buffered.start(i) <= videoElement.currentTime &&
@@ -45,157 +25,155 @@ class VideoPlayer extends React.Component {
     return 0;
   };
 
-  handlePlay = () => {
-    const { current: videoElement } = this.videoRef;
+  const handlePlay = () => {
+    const { current: videoElement } = videoRef;
 
     if (videoElement.paused) {
-      videoElement.play();
-      this.props.onShowToast('play');
+      props.onShowToast('play');
+      play();
     } else {
-      videoElement.pause();
-      this.props.onShowToast('pause');
+      props.onShowToast('pause');
+      pause();
     }
-    this.setState({ isPlaying: !videoElement.paused });
   };
 
-  handleMute = () => {
-    const { current: videoElement } = this.videoRef;
-    videoElement.muted = !videoElement.muted;
-    this.setState({ isMuted: videoElement.muted }, () => {
-      if (this.state.isMuted) {
-        this.props.onShowToast('muted');
-      }
-    });
+  const handleMute = () => {
+    const { current: videoElement } = videoRef;
+    toggleMute(!videoElement.muted);
+    if (!videoElement.muted) {
+      props.onShowToast('muted');
+    }
   };
 
-  handleFastForward = () => {
-    const { current: videoElement } = this.videoRef;
-    videoElement.currentTime = videoElement.currentTime + 5;
-    this.props.onShowToast('forwardFive');
+  const handleFastForward = () => {
+    fastFoward();
+    props.onShowToast('forwardFive');
   };
 
-  handleRewind = () => {
-    const { current: videoElement } = this.videoRef;
-    videoElement.currentTime = videoElement.currentTime - 5;
-    this.props.onShowToast('rewindFive');
+  const handleRewind = () => {
+    rewind();
+    props.onShowToast('rewindFive');
   };
 
-  handleFrameForward = () => {
-    const { current: videoElement } = this.videoRef;
-    videoElement.pause();
-    videoElement.currentTime = videoElement.currentTime + 1 / CURRENT_FRAMERATE;
+  const handleFrameForward = () => {
+    frameForward();
   };
 
-  handleFrameBack = () => {
-    const { current: videoElement } = this.videoRef;
-    videoElement.pause();
-    videoElement.currentTime = videoElement.currentTime - 1 / CURRENT_FRAMERATE;
+  const handleFrameBack = () => {
+    frameBack();
   };
 
-  handleTimeUpdate = () => {
-    const { current: videoElement } = this.videoRef;
-    this.setState({
-      currentTime: (100 / videoElement.duration) * videoElement.currentTime,
-      isLoading: false,
-    });
+  const handleTimeUpdate = () => {
+    const { current: videoElement } = videoRef;
+    setTime((100 / videoElement.duration) * videoElement.currentTime);
   };
 
-  handleUpdateTimeManual = (currentTime) => {
-    this.setState({ currentTime });
+  const handleUpdateTimeManual = (currentTime) => {
+    setTime(currentTime);
   };
 
-  handleLoadMetadata = () => {
-    this.setState({
+  const handleLoadMetadata = () => {
+    setMetadata({
       currentTime: 0,
       bufferedEnd: 0,
       hasError: false,
     });
   };
 
-  handleDurationChange = () => {
-    const { current: videoElement } = this.videoRef;
-    this.setState({
-      duration: videoElement.duration,
+  const handleDurationChange = () => {
+    const { current: videoElement } = videoRef;
+    setMetadata({
+      duration: videoElement.duration
     });
   };
 
-  handleProgress = () => {
-    const { current: videoElement } = this.videoRef;
+  const handleProgress = () => {
+    const { current: videoElement } = videoRef;
     if (videoElement.buffered.length > 0) {
-      const bufferedEnd = videoElement.buffered.end(this.getCurrentBufferIndex());
-      this.setState({
-        bufferedEnd: (100 / videoElement.duration) * bufferedEnd,
+      const bufferedEnd = videoElement.buffered.end(getCurrentBufferIndex());
+      setMetadata({
+        bufferedEnd: (100 / videoElement.duration) * bufferedEnd
       });
     }
   };
 
-  handleError = () => {
-    this.setState({ hasError: true });
+  const handleError = () => {
+    setMetadata({
+      hasError: true,
+    });
   };
 
-  handleLoadAttempt = () => {
-    const { current: videoElement } = this.videoRef;
+  const handleLoadAttempt = () => {
+    const { current: videoElement } = videoRef;
     if (videoElement) {
       videoElement.load();
     }
   };
 
-  handleWaiting = () => {
-    this.setState({ isLoading: true });
+  const handleWaiting = () => {
+    setMetadata({
+      isLoading: true,
+    });
   };
 
-  render() {
-    const { duration, currentTime, bufferedEnd, isPlaying, isLoading, isMuted, isFullscreen, hasError } = this.state;
-    return (
-      <Fragment>
-        <div className="VideoPlayer-Container">
-          {hasError && (
-            <div className="VideoPlayer-Error">
-              <span className="VideoPlayer-Error-Copy">An error occured while loading video.</span>
-              <div>
-                <Button onClick={this.handleLoadAttempt}>Try Again</Button>
-              </div>
+  useEffect(() => {
+    setVideoRef(videoRef);
+  }, []);
+
+  useEffect(() => {
+    handleLoadAttempt();
+  }, [state.currentVideo.videoId]);
+
+  const { duration, currentTime, bufferedEnd, isPlaying, isLoading, isMuted, isFullscreen, hasError } = state.currentVideo;
+  return (
+    <Fragment>
+      <div className="VideoPlayer-Container">
+        {hasError && (
+          <div className="VideoPlayer-Error">
+            <span className="VideoPlayer-Error-Copy">An error occured while loading video.</span>
+            <div>
+              <Button onClick={handleLoadAttempt}>Try Again</Button>
             </div>
-          )}
-          {isLoading && <Loading />}
-          {this.props.toastIcon && <Toast key={this.props.toastKey} center cirlce icon={this.props.toastIcon} />}
-          <video
-            className="VideoPlayer-Video"
-            autoPlay={false}
-            preload="metadata"
-            ref={this.videoRef}
-            onTimeUpdate={this.handleTimeUpdate}
-            onDurationChange={this.handleDurationChange}
-            onLoadedMetadata={this.handleLoadMetadata}
-            onWaiting={this.handleWaiting}
-            onError={this.handleError}
-            onProgress={this.handleProgress}
-            onClick={this.handlePlay}
-          >
-            <source src={this.props.srcUrl} type="video/mp4" />
-          </video>
-        </div>
-        <ControlBar
-          videoRef={this.videoRef}
-          duration={this.state.duration}
-          currentTime={this.state.currentTime}
-          bufferedEnd={this.state.bufferedEnd}
-          isPlaying={this.state.isPlaying}
-          isMuted={this.state.isMuted}
-          isFullscreen={this.state.isFullscreen}
-          onFullscreen={this.props.onFullscreen}
-          onUpdateTimeManual={this.handleUpdateTimeManual}
-          onPlay={this.handlePlay}
-          onRewind={this.handleRewind}
-          onFastForward={this.handleFastForward}
-          onMute={this.handleMute}
-          onFrameForward={this.handleFrameForward}
-          onFrameBack={this.handleFrameBack}
-        />
-      </Fragment>
-    );
-  }
-}
+          </div>
+        )}
+        {isLoading && <Loading />}
+        {props.toastIcon && <Toast key={props.toastKey} center cirlce icon={props.toastIcon} />}
+        <video
+          className="VideoPlayer-Video"
+          autoPlay={false}
+          preload="metadata"
+          ref={videoRef}
+          onTimeUpdate={handleTimeUpdate}
+          onDurationChange={handleDurationChange}
+          onLoadedMetadata={handleLoadMetadata}
+          onWaiting={handleWaiting}
+          onError={handleError}
+          onProgress={handleProgress}
+          onClick={handlePlay}
+        >
+          <source src={props.srcUrl} type="video/mp4" />
+        </video>
+      </div>
+      <ControlBar
+        videoRef={videoRef}
+        duration={duration}
+        currentTime={currentTime}
+        bufferedEnd={bufferedEnd}
+        isPlaying={isPlaying}
+        isMuted={isMuted}
+        isFullscreen={isFullscreen}
+        onFullscreen={props.onFullscreen}
+        onUpdateTimeManual={handleUpdateTimeManual}
+        onPlay={handlePlay}
+        onRewind={handleRewind}
+        onFastForward={handleFastForward}
+        onMute={handleMute}
+        onFrameForward={handleFrameForward}
+        onFrameBack={handleFrameBack}
+      />
+    </Fragment>
+  );
+};
 
 VideoPlayer.propTypes = {
   onFullscreen: PropTypes.func,

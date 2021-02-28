@@ -12,19 +12,18 @@ const CURRENT_FRAMERATE = 30;
 
 class ControlBar extends React.Component {
   componentDidMount() {
-    console.log('mounted');
-    document.addEventListener('fullscreenchange', this.listenFullscreen);
+    // document.addEventListener('fullscreenchange', this.listenFullscreen);
     document.addEventListener('keydown', this.listenKeyPress);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('fullscreenchange', this.listenFullscreen);
+    // document.removeEventListener('fullscreenchange', this.listenFullscreen);
     document.removeEventListener('keydown', this.listenKeyPress);
   }
 
-  listenFullscreen = () => {
-    this.setState({ isFullscreen: !!document.fullscreenElement });
-  };
+  // listenFullscreen = () => {
+  //   this.setState({ isFullscreen: !!document.fullscreenElement });
+  // };
 
   listenKeyPress = (event) => {
     console.log(event.keyCode);

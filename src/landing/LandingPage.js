@@ -7,7 +7,7 @@ import { request } from '../core/utils/fetchRequest';
 import './LandingPage.scss';
 
 const LandingPage = () => {
-  const { state, setCurrentVideo, setOtherVideos } = useVideo();
+  const { state, setCurrentVideo, setOtherVideos, setMetadata } = useVideo();
 
   const fullscreenContainerRef = useRef();
 
@@ -38,6 +38,7 @@ const LandingPage = () => {
     } else if (container.webkitRequestFullscreen) {
       container.webkitRequestFullscreen(); // Chrome and Safari
     }
+    setMetadata({ isFullscreen: !document.fullscreenElement });
   };
 
   useEffect(() => {
@@ -64,6 +65,6 @@ const LandingPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default LandingPage;

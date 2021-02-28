@@ -8,6 +8,7 @@ const initVideoData = ({ videoId, videoRef }) => {
     currentVideo: {
       videoId,
       videoRef,
+      frameRate: 30,
       duration: 0,
       isPlaying: false,
       isMuted: false,
@@ -15,6 +16,9 @@ const initVideoData = ({ videoId, videoRef }) => {
       isFullscreen: false,
       currentTime: 0,
       hoverTime: 0,
+      bufferedEnd: 0,
+      hasError: false,
+      isLoading: false,
     },
     uploadVideo: {
       uploadedFiles: [],
@@ -40,12 +44,42 @@ const initVideoData = ({ videoId, videoRef }) => {
 };
 
 const dataReducer = (state, action) => {
-  const { current: videoElement } = state?.uploadVideo?.videoRef || {};
+  const { current: currentVideoElement } = state?.currentVideo?.videoRef || {};
+  const { current: uploadVideoElement } = state?.uploadVideo?.videoRef || {};
   // TODO: Setup some custom events that can happen, Play, Mute Trim, Upload, New Video (Call init func)?
   switch (action.type) {
     // -------- CURRENT VIDEO -------- //
+    case 'VideoEvent-Play':
+      currentVideoElement.play();
+      return { ...state, currentVideo: { ...state.currentVideo, isPlaying: true } };
+    case 'VideoEvent-Pause':
+      currentVideoElement.pause();
+      return { ...state, currentVideo: { ...state.currentVideo, isPlaying: false } };
+    case 'VideoEvent-ToggleMute':
+      currentVideoElement.muted = action.payload;
+      return { ...state, currentVideo: { ...state.currentVideo, isMuted: action.payload } };
+    case 'VideoEvent-FastForward':
+      currentVideoElement.currentTime += 5;
+      return { ...state, currentVideo: { ...state.currentVideo } };
+    case 'VideoEvent-Rewind':
+      currentVideoElement.currentTime -= 5;
+      return { ...state, currentVideo: { ...state.currentVideo } };
+    case 'VideoEvent-FrameForward':
+      currentVideoElement.currentTime += 1 / state.currentVideo.frameRate;
+      currentVideoElement.pause();
+      return { ...state, currentVideo: { ...state.currentVideo } };
+    case 'VideoEvent-FrameBack':
+      currentVideoElement.currentTime -= 1 / state.currentVideo.frameRate;
+      currentVideoElement.pause();
+      return { ...state, currentVideo: { ...state.currentVideo } };
+    case 'VideoEvent-TimeUpdate':
+      return { ...state, currentVideo: { ...state.currentVideo, currentTime: action.payload, isLoading: false } };
+    case 'VideoEvent-Metadata':
+      return { ...state, currentVideo: { ...state.currentVideo, ...action.payload } };
     case 'VideoEvent-CurrentVideo':
       return { ...state, currentVideo: { ...state.currentVideo, videoId: action.payload } };
+    case 'VideoEvent-Ref':
+      return { ...state, currentVideo: { ...state.currentVideo, videoRef: action.payload } };
     case 'VideoEvent-OtherVideos':
       return { ...state, otherVideos: [...action.payload] };
 
@@ -65,7 +99,8 @@ const dataReducer = (state, action) => {
         action.payload.leftDistance = 0;
       }
       if (action.payload.trimStartTime) {
-        videoElement.currentTime = action.payload.trimStartTime;
+        uploadVideoElement.currentTime = action.payload.trimStartTime;
+        uploadVideoElement.currentTime = action.payload.trimStartTime;
       }
       return { ...state, uploadVideo: { ...state.uploadVideo, videoTrim: { ...state.uploadVideo.videoTrim, ...action.payload } } };
     case 'UploadVideoEvent-Ref':

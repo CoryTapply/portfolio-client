@@ -15,7 +15,7 @@ export const Toast = ({ icon }) => {
 export default Toast;
 
 export const withToast = (Component) => {
-  return class extends Component {
+  return class extends React.Component {
     state = {
       toastIcon: '',
       toastKey: Date.now(),
