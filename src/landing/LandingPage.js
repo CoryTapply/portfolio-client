@@ -1,34 +1,22 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import VideoPlayer from './player/VideoPlayer';
 import VideoThumbnail from './VideoThumbnail';
 import Grid from '../core/Grid';
+import { useVideo } from '../dataProviders/VideoDataAPI';
 import { request } from '../core/utils/fetchRequest';
 import './LandingPage.scss';
 
-class LandingPage extends React.Component {
-  state = {
-    currentVideo: '',
-    videos: []
+const LandingPage = () => {
+  const { state, setCurrentVideo, setOtherVideos } = useVideo();
+
+  const fullscreenContainerRef = useRef();
+
+  const handleClick = (e) => {
+    setCurrentVideo(e.currentTarget.getAttribute('name'));
   };
 
-  fullscreenContainerRef = React.createRef();
-
-  componentDidMount() {
-    request('api/v1/getVideos')
-      .then(data => this.setState({ 
-        currentVideo: data?.videos[0]?.videoLocation || '',
-        videos: data.videos || [] 
-      }));
-  }
-
-  handleClick = (e) => {
-    this.setState({
-      currentVideo: e.currentTarget.getAttribute('name'),
-    });
-  };
-
-  handleFullscreen = () => {
-    const { current: container } = this.fullscreenContainerRef;
+  const handleFullscreen = () => {
+    const { current: container } = fullscreenContainerRef;
     if (document.fullscreenElement) {
       if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -52,24 +40,30 @@ class LandingPage extends React.Component {
     }
   };
 
-  render() {
-    return (
-      <div ref={this.fullscreenContainerRef} className="LandingPage-Container">
-        <VideoPlayer
-          onFullscreen={this.handleFullscreen}
-          srcUrl={this.state.currentVideo}
-          videoId={this.state.currentVideo}
-        />
-        <div className="LandingPage-VideoGrid">
-          <Grid>
-            {this.state.videos.map(video => (
-              <VideoThumbnail key={video.thumbnailLocation} videoId={video.videoLocation} location={video.thumbnailLocation} handleClick={this.handleClick} />
-            ))}
-          </Grid>
-        </div>
+  useEffect(() => {
+    request('api/v1/getVideos')
+      .then(data => {
+        setCurrentVideo(data?.videos[0]?.videoLocation || '');
+        setOtherVideos(data.videos || []);
+      });
+  }, []);
+
+  return (
+    <div ref={fullscreenContainerRef} className="LandingPage-Container">
+      <VideoPlayer
+        onFullscreen={handleFullscreen}
+        srcUrl={state.currentVideo.videoId}
+        videoId={state.currentVideo.videoId}
+      />
+      <div className="LandingPage-VideoGrid">
+        <Grid>
+          {state.otherVideos.map(video => (
+            <VideoThumbnail key={video.thumbnailLocation} videoId={video.videoLocation} location={video.thumbnailLocation} handleClick={handleClick} />
+          ))}
+        </Grid>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default LandingPage;

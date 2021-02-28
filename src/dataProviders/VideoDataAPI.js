@@ -19,13 +19,19 @@ export const useUploadVideo = () => {
   };
 };
 
-export const useCounter = () => {
+export const useVideo = () => {
   const { state, dispatch } = useStore();
   return {
-    count: state.count,
-    message: state.message,
-    increment: () => dispatch({ type: 'increment', message:'Incremented' }),
-    decrement: () => dispatch({ type: 'decrement', message: 'Decremented' }),
-    reset: () => dispatch({ type: 'reset', message: 'Reset' })
+    state,
+    play:             () => dispatch({ type: 'VideoEvent-Play' }),
+    pause:            () => dispatch({ type: 'VideoEvent-Pause' }),
+    mute:             () => dispatch({ type: 'VideoEvent-Mute' }),
+    fullscreen:       () => dispatch({ type: 'VideoEvent-Fullscreen' }),
+    setCurrentVideo: payload => dispatch({ type: 'VideoEvent-CurrentVideo', payload }),
+    setOtherVideos:  payload => dispatch({ type: 'VideoEvent-OtherVideos', payload }),
+    setVideoRef:     payload => dispatch({ type: 'VideoEvent-Ref', payload }),
+    setVolume:       payload => dispatch({ type: 'VideoEvent-Volume', payload }),
+    getVideoPlayerLeftBound: () => state.videoRef.current.getBoundingClientRect().left,
+    getVideoPlayerWidth:     () => state.videoRef.current.getBoundingClientRect().width,
   };
 };

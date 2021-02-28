@@ -35,6 +35,7 @@ const initVideoData = ({ videoId, videoRef }) => {
         leftDistance: 0,
       },
     },
+    otherVideos: []
   };
 };
 
@@ -42,6 +43,13 @@ const dataReducer = (state, action) => {
   const { current: videoElement } = state?.uploadVideo?.videoRef || {};
   // TODO: Setup some custom events that can happen, Play, Mute Trim, Upload, New Video (Call init func)?
   switch (action.type) {
+    // -------- CURRENT VIDEO -------- //
+    case 'VideoEvent-CurrentVideo':
+      return { ...state, currentVideo: { ...state.currentVideo, videoId: action.payload } };
+    case 'VideoEvent-OtherVideos':
+      return { ...state, otherVideos: [...action.payload] };
+
+    // -------- UPLOAD VIDEO -------- //
     case 'UploadVideoEvent-Play':
       return { ...state, uploadVideo: { ...state.uploadVideo, isPlaying: true } };
     case 'UploadVideoEvent-Pause':

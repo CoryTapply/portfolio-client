@@ -199,6 +199,7 @@ class VideoPlayer extends React.Component {
 
 VideoPlayer.propTypes = {
   onFullscreen: PropTypes.func,
+  onShowToast: PropTypes.func,
   toastKey: PropTypes.number,
   toastIcon: PropTypes.string,
   srcUrl: PropTypes.string,
@@ -209,6 +210,7 @@ VideoPlayer.propTypes = {
 VideoPlayer.defaultProps = {
   videoId: '',
   onFullscreen() {},
+  onShowToast() {},
   setVideoRef() {},
 };
 
