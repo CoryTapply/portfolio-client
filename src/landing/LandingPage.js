@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import VideoPlayer from './player/VideoPlayer';
 import VideoThumbnail from './VideoThumbnail';
 import Grid from '../core/Grid';
 import { useVideo } from '../dataProviders/VideoDataAPI';
 import { request } from '../core/utils/fetchRequest';
 import './LandingPage.scss';
+import ToggleInput from '../core/ToggleInput';
 
 const LandingPage = () => {
   const {

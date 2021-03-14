@@ -30,4 +30,10 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
+  &-Inputs {
+    & > * {
+      margin: 8px 0;
+    }
+  }
 }

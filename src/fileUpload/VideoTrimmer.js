@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { hosts } from '../core/utils/fetchRequest';
 import './VideoTrimmer.scss';
 
-const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTime, selectedWidth, leftDistance } }, setTrim, getVideoPlayerLeftBound, getVideoPlayerWidth }) => {
+const VideoTrimmer = ({ state: { videoRef, duration, videoTrim: { trimStartTime, trimEndTime, selectedWidth, leftDistance } }, setTrim, getVideoPlayerLeftBound, getVideoPlayerWidth }) => {
   // const [leftDistance, setLeftDistance] = useState(0);
   // const [selectedWidth, setSelectedWidth] = useState(100);
   const [isScrubbingLeft, setIsScrubbingLeft] = useState(false);
@@ -104,6 +104,23 @@ const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTi
     };
   }, [videoRef, videoTimeLockListener]);
 
+  useEffect(() => {
+    const eventLeftDistanceTwo = Math.max(duration - 30, 0) / duration * getVideoPlayerWidth();
+    const selectedWidthTwo = getVideoPlayerWidth() - eventLeftDistanceTwo;
+
+    if (duration > 0 && !trimStartTime && !trimEndTime) {
+      setTrim({
+        trimStartTime: Math.max(duration - 30, 0),
+        trimEndTime: duration,
+        selectedWidth: selectedWidthTwo,
+        leftDistance: eventLeftDistanceTwo,
+      });
+    }
+  }, [duration, setTrim]);
+
+  const computedLeftDistance = trimStartTime / duration * getVideoPlayerWidth();
+  const computedSelectedWidth = getVideoPlayerWidth() - computedLeftDistance;
+
   return (
     <div
       className="VideoTrimmer-Container"
@@ -112,7 +129,7 @@ const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTi
       // onMouseLeave={handleMouseleave}
       // onMouseEnter={handleMouseEnter}
     >
-      <div className="VideoTrimmer-SelectedRegion" style={{ left: `${leftDistance}px`, width: `${selectedWidth}px` }}>
+      <div className="VideoTrimmer-SelectedRegion" style={{ left: `${computedLeftDistance}px`, width: `${computedSelectedWidth}px` }}>
         {/* <div className="VideoTrimmer-SelectedRegion-Handle VideoTrimmer-SelectedRegion-Handle-Left" /> */}
         {/* <div className="VideoTrimmer-SelectedRegion-Handle VideoTrimmer-SelectedRegion-Handle-Right" /> */}
         <div
@@ -153,6 +170,7 @@ const VideoTrimmer = ({ state: { videoRef, videoTrim: { trimStartTime, trimEndTi
 VideoTrimmer.propTypes = {
   state: PropTypes.shape({
     videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
+    duration: PropTypes.number.isRequired,
     videoTrim: PropTypes.shape({ trimStartTime: PropTypes.number, trimEndTime: PropTypes.number, selectedWidth: PropTypes.number, leftDistance: PropTypes.number }).isRequired,
   }).isRequired,
   setTrim: PropTypes.func.isRequired,

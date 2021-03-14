@@ -16,6 +16,8 @@ const AudioWaveform = ({
   },  
   getVideoPlayerWidth 
 }) => {
+  const [successfullyDecoded, setSuccessfullyDecoded] = useState(true);
+
   const [pixelRatio] = useState(window?.devicePixelRatio || 1);
   const videoPlayerWidth = getVideoPlayerWidth();
 
@@ -29,6 +31,11 @@ const AudioWaveform = ({
 
   useEffect(() => {
     const canvas = waveCanvasRef.current;
+
+    // If the Canvas does not exist, this probably means the audio failed to decode so we can just stop early
+    if (!canvas) {
+      return;
+    }
 
     const filterData = audioBuffer => {
       const channelOneData = audioBuffer.getChannelData(0);
@@ -82,12 +89,18 @@ const AudioWaveform = ({
     const audioCtx = new AudioContext();
     uploadedFiles[0].arrayBuffer()
       .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
-      .then(decodedAudioData => draw(normalizeData(filterData(decodedAudioData))));
+      .then(decodedAudioData => draw(normalizeData(filterData(decodedAudioData))))
+      .catch(() => setSuccessfullyDecoded(false));
 
   }, [uploadedFiles, pixelRatio]);
 
   useEffect(() => {
     const canvas = selectedTimeCanvasRef.current;
+
+    // If the Canvas does not exist, this probably means the audio failed to decode so we can just stop early
+    if (!canvas) {
+      return;
+    }
       
     const padding = 2;
     canvas.width = canvas.offsetWidth * pixelRatio;
@@ -114,7 +127,7 @@ const AudioWaveform = ({
 
   }, [currentTime, selectedWidth, leftDistance, pixelRatio, videoRef, videoPlayerWidth, isFullscreen]);
 
-  return (
+  return successfullyDecoded && (
     <div
       className="AudioWaveform-Container"
       role="slider"

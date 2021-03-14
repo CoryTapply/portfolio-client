@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useRef } from 'react';
+import React, { Fragment, useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../core/Modal';
 import Button from '../core/Button';
@@ -8,9 +8,12 @@ import VideoPlayer from '../landing/player/VideoPlayer';
 import VideoTrimmer from './VideoTrimmer';
 import AudioWaveform from './AudioWaveform';
 import './UploadModal.scss';
+import TextInput from '../core/TextInput';
+import ToggleInput from '../core/ToggleInput';
 
 const UploadModal = () => {
-  const { state,
+  const { 
+    state,
     closeModal,
     uploadFiles,
     setTrim,
@@ -23,10 +26,16 @@ const UploadModal = () => {
     frameForward,
     frameBack,
     setTime,
+    setVolume,
     setMetadata,
     getVideoPlayerLeftBound,
     getVideoPlayerWidth
   } = useUploadVideo();
+
+  const [name, setName] = useState('');
+  const [game, setGame] = useState('Warzone');
+  const [tags, setTags] = useState('flick, win, snipe, funny, friend, aim, reaction time');
+  const [enableVoiceChat, setEnableVoiceChat] = useState(false);
 
   const fullscreenContainerRef = useRef();
 
@@ -37,10 +46,15 @@ const UploadModal = () => {
 
   const handleUpload = () => {
     const data = new FormData();
-    data.append('file', state.uploadedFiles[0]);
-    data.append('start', '00:02:30');
-    data.append('end', '00:03:00');
 
+    data.append('file', state.uploadedFiles[0]);
+    data.append('start', state.videoTrim.trimStartTime);
+    data.append('end', state.videoTrim.trimEndTime);
+    data.append('videoName', name);
+    data.append('videoGame', game);
+    data.append('videoTags', tags);
+    data.append('enableVoiceChat', enableVoiceChat);
+    
     request('api/v1/uploadVideo', {
       method: 'POST',
       body: data,
@@ -105,6 +119,7 @@ const UploadModal = () => {
               frameBack={frameBack}
               setTime={setTime}
               setMetadata={setMetadata}
+              setVolume={setVolume}
             />
             {/* // // URL.revokeObjectURL() */}
             {videoRef && (
@@ -123,6 +138,12 @@ const UploadModal = () => {
                 getVideoPlayerWidth={getVideoPlayerWidth} 
               />
             )}
+            <div className="UploadContent-Inputs">
+              <TextInput placeholder="Video Name" value={name} setValue={setName} />
+              <TextInput placeholder="Game Title" value={game} setValue={setGame} />
+              <TextInput placeholder="Tags" value={tags} setValue={setTags} />
+              <ToggleInput value={enableVoiceChat} setValue={setEnableVoiceChat} />
+            </div>
           </Fragment>
         )}
         <Button onClick={handleUpload}>Upload</Button>
