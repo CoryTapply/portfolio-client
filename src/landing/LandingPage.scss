@@ -20,6 +20,9 @@
       -ms-overflow-style: none; /* IE and Edge */
       scrollbar-width: none; /* Firefox */
     }
+    &:hover {
+      outline: none;
+    }
   }
   // &-VideoGrid {
   //   Screen Height - (Video Control Bar Height) - (Footer Height)
