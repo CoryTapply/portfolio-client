@@ -149,6 +149,7 @@ const VideoPlayer = props => {
           onError={handleError}
           onProgress={handleProgress}
           onClick={handlePlay}
+          tabIndex="1"
         >
           <source src={props.srcUrl} type="video/mp4" />
         </video>
