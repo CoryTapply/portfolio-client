@@ -1,15 +1,15 @@
 import React, { Fragment, useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import Modal from '../core/Modal';
-import Button from '../core/Button';
+import Modal from '../core/components/Modal';
+import Button from '../core/components/Button';
 import { request } from '../core/utils/fetchRequest';
 import { useUploadVideo } from '../dataProviders/VideoDataAPI';
 import VideoPlayer from '../landing/player/VideoPlayer';
 import VideoTrimmer from './VideoTrimmer';
 import AudioWaveform from './AudioWaveform';
 import './UploadModal.scss';
-import TextInput from '../core/TextInput';
-import ToggleInput from '../core/ToggleInput';
+import TextInput from '../core/components/TextInput';
+import ToggleInput from '../core/components/ToggleInput';
 
 const UploadModal = () => {
   const { 

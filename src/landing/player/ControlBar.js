@@ -2,21 +2,26 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ProgressBar from './ProgressBar';
 import VolumeSlider from './videoControls/VolumeSlider';
-import Button from '../../core/Button';
-import Loading from '../../core/Loading';
-import { withCircularToast } from '../../core/Toast';
+import Button from '../../core/components/Button';
+import Loading from '../../core/components/Loading';
+import { withCircularToast } from '../../core/components/Toast';
 import { hosts } from '../../core/utils/fetchRequest';
 import './ControlBar.scss';
 
 class ControlBar extends React.Component {
   componentDidMount() {
     // document.addEventListener('fullscreenchange', this.listenFullscreen);
-    document.addEventListener('keydown', this.listenKeyPress);
+    // document.addEventListener('keydown', this.listenKeyPress);
+    console.log(this.props.videoRef);
+    console.log(document.querySelector('.LandingPage-Container'));
+    this.props.videoRef.current.addEventListener('keydown', this.listenKeyPress);
   }
 
   componentWillUnmount() {
     // document.removeEventListener('fullscreenchange', this.listenFullscreen);
-    document.removeEventListener('keydown', this.listenKeyPress);
+    // document.removeEventListener('keydown', this.listenKeyPress);
+    // document.removeEventListener('keydown', this.listenKeyPress);
+    this.props.videoRef.current.removeEventListener('keydown', this.listenKeyPress);
   }
 
   // listenFullscreen = () => {

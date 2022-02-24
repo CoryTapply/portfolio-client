@@ -1,6 +1,6 @@
 import React from 'react';
 import { hosts } from '../core/utils/fetchRequest';
-import Link from '../core/Link';
+import Link from '../core/components/Link';
 import './Footer.scss';
 
 const Footer = () => {

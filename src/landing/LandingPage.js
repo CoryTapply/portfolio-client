@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import VideoPlayer from './player/VideoPlayer';
 import VideoThumbnail from './VideoThumbnail';
-import Grid from '../core/Grid';
+import Grid from '../core/components/Grid';
 import { useVideo } from '../dataProviders/VideoDataAPI';
 import { request } from '../core/utils/fetchRequest';
 import './LandingPage.scss';
-import ToggleInput from '../core/ToggleInput';
 
 const LandingPage = () => {
   const {
@@ -65,7 +64,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div ref={fullscreenContainerRef} className="LandingPage-Container">
+    <div ref={fullscreenContainerRef} className="LandingPage-Container" tabIndex="-1">
       <VideoPlayer 
         onFullscreen={handleFullscreen}
         srcUrl={state.currentVideo.videoId}
@@ -86,7 +85,15 @@ const LandingPage = () => {
       <div className="LandingPage-VideoGrid">
         <Grid>
           {state.otherVideos.map((video) => (
-            <VideoThumbnail key={video.thumbnailLocation} videoId={video.videoLocation} location={video.thumbnailLocation} handleClick={handleClick} />
+            <VideoThumbnail 
+              key={video.thumbnailLocation} 
+              videoId={video.videoLocation} 
+              location={video.thumbnailLocation} 
+              handleClick={handleClick} 
+              viewCount={video.viewCount}
+              duration={video.duration}
+              title={video.title}
+            />
           ))}
         </Grid>
       </div>

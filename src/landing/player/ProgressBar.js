@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
+import { useAnimationFrame } from '../../core/hooks/useAnimationFrame';
 import './ProgressBar.scss';
 
 class ProgressBar extends React.Component {
@@ -50,6 +52,7 @@ class ProgressBar extends React.Component {
 
     // Update the video time
     videoElement.currentTime = time;
+    this.props.updateTimeManual(time / videoElement.duration * 100);
   };
 
   handleScrubDown = (event) => {
@@ -100,21 +103,19 @@ class ProgressBar extends React.Component {
       >
         <div className="ProgressBar-Handle-Padding" />
         <div
-          className={`ProgressBar-Time ${(isHovering || isScrubbing) && 'ProgressBar-Time-Active'}`}
+          className={cx('ProgressBar-Time', { 'ProgressBar-Time-Active': isHovering || isScrubbing})}
           style={{ left: `${hoverX}px` }}
         >
           {this.formatTime(hoverTime)}
         </div>
         <div className="ProgressBar-Scrubber-Wrapper" style={{ width: `${currentTime}%` }}>
-          <div className={`ProgressBar-Scrubber ${isScrubbing && 'ProgressBar-Scrubber-Active'}`} />
+          <div className={cx('ProgressBar-Scrubber', { 'ProgressBar-Scrubber-Active': isScrubbing})} />
         </div>
         <div className="ProgressBar-Visual">
           <div className="ProgressBar-Visual-Play" style={{ transform: `scaleX(${currentTime / 100})` }} />
           <div
             className="ProgressBar-Visual-Buffer"
-            style={{
-              transform: `scaleX(${bufferedEnd / 100})`,
-            }}
+            style={{ transform: `scaleX(${bufferedEnd / 100})` }}
           />
         </div>
       </div>

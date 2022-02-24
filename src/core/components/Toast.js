@@ -1,5 +1,5 @@
 import React from 'react';
-import { hosts } from './utils/fetchRequest';
+import { hosts } from '../utils/fetchRequest';
 import './Toast.scss';
 
 const TOAST_DURATION = 50000; // (ms)

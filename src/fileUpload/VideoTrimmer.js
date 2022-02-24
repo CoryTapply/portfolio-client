@@ -3,26 +3,37 @@ import PropTypes from 'prop-types';
 import { hosts } from '../core/utils/fetchRequest';
 import './VideoTrimmer.scss';
 
-const VideoTrimmer = ({ state: { videoRef, duration, videoTrim: { trimStartTime, trimEndTime, selectedWidth, leftDistance } }, setTrim, getVideoPlayerLeftBound, getVideoPlayerWidth }) => {
+const VideoTrimmer = ({
+  state: {
+    videoRef,
+    duration,
+    videoTrim: {
+      trimStartTime,
+      trimEndTime,
+      selectedWidth,
+      leftDistance
+    },
+  },
+  setTrim,
+  getVideoPlayerLeftBound,
+  getVideoPlayerWidth,
+}) => {
   // const [leftDistance, setLeftDistance] = useState(0);
   // const [selectedWidth, setSelectedWidth] = useState(100);
   const [isScrubbingLeft, setIsScrubbingLeft] = useState(false);
   const [isScrubbingRight, setIsScrubbingRight] = useState(false);
 
   const handleScrubDownLeft = () => {
-    console.log('Begin Scrub Left');
     setIsScrubbingLeft(true);
     setIsScrubbingRight(false);
   };
 
   const handleScrubDownRight = () => {
-    console.log('Begin Scrub Right');
     setIsScrubbingLeft(false);
     setIsScrubbingRight(true);
   };
 
   const handleScrubUp = () => {
-    console.log('End Scrubbing');
     setIsScrubbingLeft(false);
     setIsScrubbingRight(false);
   };
@@ -34,16 +45,13 @@ const VideoTrimmer = ({ state: { videoRef, duration, videoTrim: { trimStartTime,
 
     if (isScrubbingLeft) {
       setTrim({ selectedWidth: selectedWidth - (eventLeftDistance - leftDistance), leftDistance: eventLeftDistance });
-
     }
 
     if (isScrubbingRight) {
       setTrim({ selectedWidth: eventLeftDistance - leftDistance });
-
     }
 
-    const time =
-      videoElement.duration * ((nativeEvent.pageX - getVideoPlayerLeftBound()) / getVideoPlayerWidth());
+    const time = videoElement.duration * ((nativeEvent.pageX - getVideoPlayerLeftBound()) / getVideoPlayerWidth());
 
     // console.log(time);
     // console.log(nativeEvent.pageX - getVideoPlayerLeftBound());
@@ -105,7 +113,7 @@ const VideoTrimmer = ({ state: { videoRef, duration, videoTrim: { trimStartTime,
   }, [videoRef, videoTimeLockListener]);
 
   useEffect(() => {
-    const eventLeftDistanceTwo = Math.max(duration - 30, 0) / duration * getVideoPlayerWidth();
+    const eventLeftDistanceTwo = (Math.max(duration - 30, 0) / duration) * getVideoPlayerWidth();
     const selectedWidthTwo = getVideoPlayerWidth() - eventLeftDistanceTwo;
 
     if (duration > 0 && !trimStartTime && !trimEndTime) {
@@ -118,9 +126,6 @@ const VideoTrimmer = ({ state: { videoRef, duration, videoTrim: { trimStartTime,
     }
   }, [duration, setTrim]);
 
-  const computedLeftDistance = trimStartTime / duration * getVideoPlayerWidth();
-  const computedSelectedWidth = getVideoPlayerWidth() - computedLeftDistance;
-
   return (
     <div
       className="VideoTrimmer-Container"
@@ -129,7 +134,7 @@ const VideoTrimmer = ({ state: { videoRef, duration, videoTrim: { trimStartTime,
       // onMouseLeave={handleMouseleave}
       // onMouseEnter={handleMouseEnter}
     >
-      <div className="VideoTrimmer-SelectedRegion" style={{ left: `${computedLeftDistance}px`, width: `${computedSelectedWidth}px` }}>
+      <div className="VideoTrimmer-SelectedRegion" style={{ left: `${leftDistance}px`, width: `${selectedWidth}px` }}>
         {/* <div className="VideoTrimmer-SelectedRegion-Handle VideoTrimmer-SelectedRegion-Handle-Left" /> */}
         {/* <div className="VideoTrimmer-SelectedRegion-Handle VideoTrimmer-SelectedRegion-Handle-Right" /> */}
         <div
@@ -171,14 +176,18 @@ VideoTrimmer.propTypes = {
   state: PropTypes.shape({
     videoRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
     duration: PropTypes.number.isRequired,
-    videoTrim: PropTypes.shape({ trimStartTime: PropTypes.number, trimEndTime: PropTypes.number, selectedWidth: PropTypes.number, leftDistance: PropTypes.number }).isRequired,
+    videoTrim: PropTypes.shape({
+      trimStartTime: PropTypes.number,
+      trimEndTime: PropTypes.number,
+      selectedWidth: PropTypes.number,
+      leftDistance: PropTypes.number,
+    }).isRequired,
   }).isRequired,
   setTrim: PropTypes.func.isRequired,
   getVideoPlayerLeftBound: PropTypes.func.isRequired,
   getVideoPlayerWidth: PropTypes.func.isRequired,
 };
 
-VideoTrimmer.defaultProps = {
-};
+VideoTrimmer.defaultProps = {};
 
 export default VideoTrimmer;

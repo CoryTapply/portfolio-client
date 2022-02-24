@@ -157,8 +157,6 @@ const dataReducer = (state, action) => {
 export const StoreProvider = ({ children, initArgs }) => {
   const [state, dispatch] = useReducer(dataReducer, initArgs, initVideoData);
 
-  console.log('GLOBAL STATE FROM PROVIDER', state);
-
   return (
     <StoreContext.Provider value={{ state, dispatch }}>
       {children}
